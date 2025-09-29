@@ -1,0 +1,9 @@
+# Environments
+venv/
+*.pyc
+__pycache__/
+
+# Local data and results
+checkpoints/
+visualizations/
+data/

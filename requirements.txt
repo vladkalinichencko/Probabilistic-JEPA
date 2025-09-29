@@ -1,0 +1,15 @@
+numpy
+torch
+torchvision
+imageio
+einops
+matplotlib
+scikit-learn
+gymnasium
+Pillow
+tqdm
+opencv-python
+datasets
+plotly
+tensorboard
+kaleido
