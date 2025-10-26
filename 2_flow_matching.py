@@ -14,7 +14,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
-from torch.optim.lr_scheduler import LambdaLR
 from datasets import load_dataset
 from torch.utils.tensorboard import SummaryWriter
 from visualization import (
@@ -32,9 +31,9 @@ from visualization import (
 # ------------------
 NUM_CLASSES = 100
 IMAGE_SIZE = 64
-EPOCHS = 200
+EPOCHS = 400
 BATCH_SIZE = 600
-LR = 5e-5
+LR = 5e-5                     # Small constant learning rate
 WEIGHT_DECAY = 1e-4
 DEVICE_TYPE = (
     'mps'
@@ -79,6 +78,7 @@ LOSS_STD_FLOOR = 0.5
 NF_LAYERS = 6                     # Number of affine coupling steps
 NF_HIDDEN = 768                   # Hidden size in s,t MLPs
 NF_S_CLAMP = 2.0                  # Bound on log-scale via tanh to avoid overflow
+COND_ACTNORM_EPS = 1e-6           # Numerical floor for ActNorm over cond vectors
 
 # Masking / targets
 NUM_TARGET_BLOCKS = 4
@@ -104,14 +104,7 @@ KNN_K = 20
 VAL_LOSS_MAX_BATCHES = 5
 PROJECTOR_PERCENTILE = 99.0
 
-# LR schedule (warmup + cosine)
-LR_WARMUP_EPOCHS = 30
-LR_START = 1e-4          # ~10e-5
-LR_PEAK = 3e-4           # try 3e-4 peak (can raise to 1e-3)
-LR_END = 1e-6
-# WD schedule (linear ramp)
-WD_START = 1e-4
-WD_END = 1e-2            # ramp up towards end; adjust as needed
+# No LR scheduler -> keep constants minimal
 
 def _proxy_url(port: int, suffix: str, absolute: bool = True) -> str:
     rel = f"/proxy/absolute/{port}/{suffix}/"
@@ -455,6 +448,34 @@ class AffineCoupling(nn.Module):
         logdet = (-s).sum(dim=1)  # inverse log-det
         return x, logdet
 
+
+class ActNorm1D(nn.Module):
+    """Data-dependent affine normalization over final dimension (Glow-style)."""
+    def __init__(self, dim: int, eps: float = 1e-6):
+        super().__init__()
+        self.dim = dim
+        self.eps = eps
+        self.bias = nn.Parameter(torch.zeros(dim))
+        self.log_scale = nn.Parameter(torch.zeros(dim))
+        self.register_buffer('initialized', torch.tensor(False, dtype=torch.bool))
+
+    def _initialize(self, x: torch.Tensor):
+        flat = x.reshape(-1, self.dim)
+        if flat.numel() == 0:
+            return
+        mean = flat.mean(dim=0)
+        std = flat.std(dim=0, unbiased=False).clamp_min(self.eps)
+        with torch.no_grad():
+            self.bias.copy_(-mean)
+            self.log_scale.copy_(torch.log(1.0 / std))
+            self.initialized.fill_(True)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        if not bool(self.initialized.item()) and self.training:
+            self._initialize(x.detach())
+        scale = torch.exp(self.log_scale)
+        return (x + self.bias) * scale
+
 class FlowBatchNorm1D(nn.Module):
     """
     BatchNorm for flows over feature dimension with exact log-det.
@@ -639,7 +660,7 @@ def _visible_tokens(pred_tgt: torch.Tensor, tgt_pad: torch.Tensor) -> Optional[t
     return z
 
 
-def jepa_alignment_loss(pred_tgt: torch.Tensor, teacher_tgt: torch.Tensor, tgt_pad: torch.Tensor) -> torch.Tensor:
+def metric_alignment(pred_tgt: torch.Tensor, teacher_tgt: torch.Tensor, tgt_pad: torch.Tensor) -> torch.Tensor:
     """Angular alignment between student predictions and teacher targets."""
     mask = (~tgt_pad).float()
     denom = mask.sum()
@@ -651,7 +672,7 @@ def jepa_alignment_loss(pred_tgt: torch.Tensor, teacher_tgt: torch.Tensor, tgt_p
     return (diff * mask).sum() / denom
 
 
-def jepa_variance_loss(pred_tgt: torch.Tensor, tgt_pad: torch.Tensor, std_floor: float = LOSS_STD_FLOOR) -> torch.Tensor:
+def metric_variance(pred_tgt: torch.Tensor, tgt_pad: torch.Tensor, std_floor: float = LOSS_STD_FLOOR) -> torch.Tensor:
     """Variance term keeps per-dimension std above a floor."""
     z = _visible_tokens(pred_tgt, tgt_pad)
     if z is None:
@@ -660,7 +681,7 @@ def jepa_variance_loss(pred_tgt: torch.Tensor, tgt_pad: torch.Tensor, std_floor:
     return F.relu(std_floor - std).pow(2).mean()
 
 
-def jepa_decorrelation_loss(pred_tgt: torch.Tensor, tgt_pad: torch.Tensor) -> torch.Tensor:
+def metric_covariance(pred_tgt: torch.Tensor, tgt_pad: torch.Tensor) -> torch.Tensor:
     """Decorrelation term penalizes off-diagonal covariance."""
     z = _visible_tokens(pred_tgt, tgt_pad)
     if z is None or z.size(0) <= 1:
@@ -673,15 +694,15 @@ def jepa_decorrelation_loss(pred_tgt: torch.Tensor, tgt_pad: torch.Tensor) -> to
     return off_diag.pow(2).mean()
 
 
-def jepa_loss_components(
+def jepa_metrics(
     pred_tgt: torch.Tensor,
     teacher_tgt: torch.Tensor,
     tgt_pad: torch.Tensor,
     std_floor: float = LOSS_STD_FLOOR,
 ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-    align = jepa_alignment_loss(pred_tgt, teacher_tgt, tgt_pad)
-    var = jepa_variance_loss(pred_tgt, tgt_pad, std_floor)
-    cov = jepa_decorrelation_loss(pred_tgt, tgt_pad)
+    align = metric_alignment(pred_tgt, teacher_tgt, tgt_pad)
+    var = metric_variance(pred_tgt, tgt_pad, std_floor)
+    cov = metric_covariance(pred_tgt, tgt_pad)
     return align, var, cov
 
 
@@ -766,8 +787,15 @@ def train_run():
     teacher.ema_update(student, m=0.0)
     nf = CondRealNVPFlow(dim=HIDDEN_DIM, cond_dim=HIDDEN_DIM, num_layers=NF_LAYERS, hidden=NF_HIDDEN).to(DEVICE)
     pooler = ContextPooler(HIDDEN_DIM).to(DEVICE)
+    cond_norm = ActNorm1D(HIDDEN_DIM, eps=COND_ACTNORM_EPS).to(DEVICE)
 
-    opt = torch.optim.AdamW(list(student.parameters()) + list(nf.parameters()) + list(pooler.parameters()), lr=LR_PEAK, weight_decay=WD_START)
+    params_all = (
+        list(student.parameters())
+        + list(nf.parameters())
+        + list(pooler.parameters())
+        + list(cond_norm.parameters())
+    )
+    opt = torch.optim.AdamW(params_all, lr=LR, weight_decay=WEIGHT_DECAY)
 
     writer.add_text('hparams', str({
         'PATCH_SIZE': PATCH_SIZE,
@@ -786,51 +814,6 @@ def train_run():
     # Sample/step accounting
     total_samples = EPOCHS * len(train_ds)
     steps_per_epoch = max(1, len(train_loader))
-    total_steps = EPOCHS * steps_per_epoch
-    warmup_steps = int(LR_WARMUP_EPOCHS * steps_per_epoch)
-    cosine_steps = max(1, total_steps - warmup_steps)
-    # LR scheduler via LambdaLR to avoid epoch deprecation warnings
-    def _lr_lambda(step: int) -> float:
-        # step starts at 0 after first scheduler.step()
-        if step < warmup_steps:
-            w = step / max(1, warmup_steps)
-            lr = LR_START + (LR_PEAK - LR_START) * w
-        else:
-            p = (step - warmup_steps) / max(1, cosine_steps)
-            p = min(1.0, max(0.0, p))
-            lr = LR_END + 0.5 * (LR_PEAK - LR_END) * (1.0 + math.cos(math.pi * p))
-        return float(lr / LR_PEAK)
-    scheduler = LambdaLR(opt, lr_lambda=_lr_lambda)
-
-    # WD scheduler: linear ramp from WD_START to WD_END over total_steps
-    class WeightDecayScheduler:
-        def __init__(self, optimizer, start: float, end: float, total_steps: int):
-            self.optimizer = optimizer
-            self.start = float(start)
-            self.end = float(end)
-            self.total_steps = max(1, int(total_steps))
-            self.last_step = -1
-        def state_dict(self):
-            return {'last_step': self.last_step, 'start': self.start, 'end': self.end, 'total_steps': self.total_steps}
-        def load_state_dict(self, state):
-            try:
-                self.last_step = int(state.get('last_step', -1))
-                self.start = float(state.get('start', self.start))
-                self.end = float(state.get('end', self.end))
-                self.total_steps = int(state.get('total_steps', self.total_steps))
-            except Exception:
-                pass
-        def _value(self, step: int) -> float:
-            t = min(1.0, max(0.0, step / float(self.total_steps)))
-            return self.start + (self.end - self.start) * t
-        def step(self) -> float:
-            self.last_step += 1
-            wd = self._value(self.last_step)
-            for pg in self.optimizer.param_groups:
-                pg['weight_decay'] = wd
-            return wd
-
-    wd_scheduler = WeightDecayScheduler(opt, WD_START, WD_END, total_steps)
     samples_seen = 0
     last_log_samples = 0
     last_val_samples = 0
@@ -852,17 +835,11 @@ def train_run():
                 pooler.load_state_dict(state['pooler'], strict=True)
             except Exception:
                 print("[resume] Could not load 'pooler' state_dict from checkpoint (may be absent)")
+            try:
+                cond_norm.load_state_dict(state['cond_norm'], strict=True)
+            except Exception:
+                print("[resume] Could not load 'cond_norm' state_dict from checkpoint (may be absent)")
             opt.load_state_dict(state['opt'])
-            if 'sched' in state:
-                try:
-                    scheduler.load_state_dict(state['sched'])
-                except Exception:
-                    pass
-            if 'wd_sched' in state:
-                try:
-                    wd_scheduler.load_state_dict(state['wd_sched'])
-                except Exception:
-                    pass
             samples_seen = int(state.get('samples_seen', 0))
             steps_done = int(state.get('steps_done', samples_seen // max(1, BATCH_SIZE)))
             last_log_samples = int(state.get('last_log_samples', samples_seen))
@@ -894,7 +871,7 @@ def train_run():
 
     steps_done = 0
     for epoch in range(EPOCHS):
-        student.train(); nf.train(); pooler.train()
+        student.train(); nf.train(); pooler.train(); cond_norm.train()
         for batch_idx, (x, _) in enumerate(train_loader, start=1):
             x = x.to(DEVICE, non_blocking=True)
             B = x.size(0)
@@ -944,8 +921,11 @@ def train_run():
             # 2) Flatten visible targets and cond
             visible = (~tgt_pad)
             if visible.any():
+                cond_vis = cond[visible]
+                cond_vis = cond_norm(cond_vis)
+                cond[visible] = cond_vis
                 y_flat = teacher_tgt[visible]     # [N_vis, D]
-                c_flat = cond[visible]            # [N_vis, D]
+                c_flat = cond_vis                 # [N_vis, D]
                 # 3) Exact log-likelihood under the flow:
                 #    log p_theta(y|c) = log p0(z) + sum log|det J_k|,  where z = Phi^{-1}(y|c)
                 logp = nf.log_prob(y_flat, c_flat)            # [N_vis]
@@ -962,11 +942,17 @@ def train_run():
                 # reconstruct padded [B,St,D] for visualization
                 pred_tgt = torch.zeros_like(teacher_tgt)
                 pred_tgt[visible] = yhat_flat
-                # JEPA-style diagnostics on samples (not used in loss)
-                align_loss, var_loss, cov_loss = jepa_loss_components(pred_tgt, teacher_tgt, tgt_pad, std_floor=LOSS_STD_FLOOR)
-                align_val = float(align_loss.item())
-                var_val = float(var_loss.item())
-                cov_val = float(cov_loss.item())
+                # Log cond norms for sanity
+                try:
+                    cond_norm_mean = float(c_flat.norm(dim=1).mean().item())
+                    writer.add_scalar('train/cond_norm_mean', cond_norm_mean, global_step=samples_seen)
+                except Exception:
+                    pass
+                # JEPA-style diagnostics on samples (metrics only; not used in loss)
+                align_m, var_m, cov_m = jepa_metrics(pred_tgt, teacher_tgt, tgt_pad, std_floor=LOSS_STD_FLOOR)
+                align_val = float(align_m.item())
+                var_val = float(var_m.item())
+                cov_val = float(cov_m.item())
             else:
                 # Fallback when no targets visible (should be rare)
                 loss = teacher_tgt.new_tensor(0.0)
@@ -977,18 +963,20 @@ def train_run():
             opt.zero_grad(set_to_none=True)
             loss.backward()
             gn = torch.nn.utils.clip_grad_norm_(
-                list(student.parameters()) + list(nf.parameters()) + list(pooler.parameters()),
+                list(student.parameters())
+                + list(nf.parameters())
+                + list(pooler.parameters())
+                + list(cond_norm.parameters()),
                 GRAD_CLIP_MAX_NORM,
             )
             opt.step()
-            scheduler.step()
-            curr_lr = float(opt.param_groups[0].get('lr', LR_PEAK))
-            curr_wd = float(wd_scheduler.step())
+            curr_lr = float(opt.param_groups[0].get('lr', LR))
+            curr_wd = float(opt.param_groups[0].get('weight_decay', WEIGHT_DECAY))
 
             # Gradient diagnostics (directional stability, sign distribution)
             try:
                 grads = []
-                for p in list(student.parameters()) + list(nf.parameters()) + list(pooler.parameters()):
+                for p in list(student.parameters()) + list(nf.parameters()) + list(pooler.parameters()) + list(cond_norm.parameters()):
                     if p.grad is not None:
                         grads.append(p.grad.detach().flatten())
                 if grads:
@@ -1024,11 +1012,7 @@ def train_run():
                     writer.add_scalar('train/grad_pos_ratio', pos_ratio, global_step=samples_seen)
                     writer.add_scalar('train/grad_cos_to_prev', cos_to_prev, global_step=samples_seen)
                     writer.add_scalars('loss', {'train': loss_val}, global_step=samples_seen)
-                    writer.add_scalars(
-                        'loss/components',
-                        {'align': align_val, 'var': var_val, 'cov': cov_val},
-                        global_step=samples_seen,
-                    )
+                    writer.add_scalars('metrics/components', {'align': align_val, 'var': var_val, 'cov': cov_val}, global_step=samples_seen)
                 except Exception:
                     pass
                 try:
@@ -1118,8 +1102,11 @@ def train_run():
                                 cond_v[i, :Lv] = h_c_v[i].unsqueeze(0) + pos_tv[i, :Lv]
                             visible_v = (~tpad)
                             if visible_v.any():
+                                cond_v_vis = cond_v[visible_v]
+                                cond_v_vis = cond_norm(cond_v_vis)
+                                cond_v[visible_v] = cond_v_vis
                                 yv_flat = teach_v[visible_v]
-                                cv_flat = cond_v[visible_v]
+                                cv_flat = cond_v_vis
                                 logp_v = nf.log_prob(yv_flat, cv_flat)
                                 vloss = float((-logp_v.mean()).item())
                                 val_loss_acc += vloss
@@ -1128,7 +1115,7 @@ def train_run():
                                     yhat_v_flat = nf.sample(cv_flat)
                                 pred_v = torch.zeros_like(teach_v)
                                 pred_v[visible_v] = yhat_v_flat
-                                align_v, var_v, cov_v = jepa_loss_components(pred_v, teach_v, tpad, std_floor=LOSS_STD_FLOOR)
+                                align_v, var_v, cov_v = jepa_metrics(pred_v, teach_v, tpad, std_floor=LOSS_STD_FLOOR)
                                 val_align_acc += float(align_v.item())
                                 val_var_acc += float(var_v.item())
                                 val_cov_acc += float(cov_v.item())
@@ -1137,15 +1124,13 @@ def train_run():
                         vloss = val_loss_acc / n_batches
                         writer.add_scalar('val/nll', vloss, global_step=samples_seen)
                         writer.add_scalars('loss', {'val': float(vloss)}, global_step=samples_seen)
-                        writer.add_scalars(
-                            'loss/components_val',
-                            {
-                                'align': val_align_acc / n_batches,
-                                'var': val_var_acc / n_batches,
-                                'cov': val_cov_acc / n_batches,
-                            },
-                            global_step=samples_seen,
-                        )
+                        writer.add_scalars('metrics/components_val',
+                                           {
+                                               'align': val_align_acc / n_batches,
+                                               'var': val_var_acc / n_batches,
+                                               'cov': val_cov_acc / n_batches,
+                                           },
+                                           global_step=samples_seen)
                 except Exception:
                     pass
 
@@ -1164,9 +1149,8 @@ def train_run():
                     'teacher': teacher.state_dict(),
                     'nf': nf.state_dict(),
                     'pooler': pooler.state_dict(),
+                    'cond_norm': cond_norm.state_dict(),
                     'opt': opt.state_dict(),
-                    'sched': scheduler.state_dict(),
-                    'wd_sched': wd_scheduler.state_dict(),
                     'samples_seen': samples_seen,
                     'steps_done': steps_done,
                     'last_log_samples': last_log_samples,
@@ -1204,6 +1188,7 @@ def train_run():
         'teacher': teacher.state_dict(),
         'nf': nf.state_dict(),
         'pooler': pooler.state_dict(),
+        'cond_norm': cond_norm.state_dict(),
         'opt': opt.state_dict(),
         'samples_seen': samples_seen,
         'best_knn': best_knn,
