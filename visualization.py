@@ -613,6 +613,124 @@ def tb_log_vector_projection(writer: 'SummaryWriter', tag: str, step: int,
     except Exception:
         pass
 
+# --- Flow visualization helpers ---
+def tb_log_flow_samples_2d(
+    writer: 'SummaryWriter',
+    tag: str,
+    step: int,
+    flow_samples: torch.Tensor,
+    teacher_vec: Optional[torch.Tensor] = None,
+) -> None:
+    """Log a 2D PCA scatter of multiple flow samples for the *same* target.
+
+    Args:
+        flow_samples: (K, D) tensor – K different samples from the flow under the same cond.
+        teacher_vec: (D,) optional – ground-truth / teacher embedding for reference.
+    """
+    if writer is None:
+        return
+    if flow_samples is None or flow_samples.numel() == 0:
+        return
+    X = flow_samples.detach().cpu().float()
+    K, D = X.shape
+    # build PCA(2)
+    Xc = X - X.mean(dim=0, keepdim=True)
+    # if we also have teacher, append it so it is included in PCA basis
+    has_teacher = teacher_vec is not None
+    if has_teacher:
+        Tv = teacher_vec.detach().cpu().float().unsqueeze(0)
+        Xall = torch.cat([Xc, Tv - X.mean(dim=0, keepdim=True)], dim=0)
+    else:
+        Xall = Xc
+    # SVD
+    try:
+        U, S, Vt = torch.linalg.svd(Xall, full_matrices=False)
+        P = Vt[:2].T  # (D,2)
+        Z = Xc @ P  # (K,2)
+        if has_teacher:
+            Zt = (Tv - X.mean(dim=0, keepdim=True)) @ P  # (1,2)
+        else:
+            Zt = None
+    except Exception:
+        # fallback: random proj
+        rng = torch.Generator().manual_seed(0)
+        P = torch.randn(D, 2, generator=rng)
+        Z = Xc @ P
+        Zt = None
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(figsize=(4, 4), dpi=140)
+    ax.scatter(Z[:, 0].numpy(), Z[:, 1].numpy(), s=12, c='tab:blue', alpha=0.55, label='flow samples')
+    if Zt is not None:
+        ax.scatter(Zt[:, 0].numpy(), Zt[:, 1].numpy(), s=60, c='red', marker='x', label='teacher')
+    ax.set_title('Flow samples (PCA-2D)')
+    ax.set_xlabel('PC1')
+    ax.set_ylabel('PC2')
+    ax.legend(frameon=False, loc='best')
+    fig.tight_layout()
+    import io, imageio
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png'); plt.close(fig)
+    buf.seek(0)
+    img = imageio.v2.imread(buf)
+    chw = np.transpose(img, (2, 0, 1))
+    writer.add_image(tag, chw, global_step=step)
+
+
+def tb_log_flow_stats(
+    writer: 'SummaryWriter',
+    step: int,
+    cond_norm: Optional[float] = None,
+    mean_s: Optional[float] = None,
+    max_s: Optional[float] = None,
+    logdet: Optional[float] = None,
+) -> None:
+    """Log scalar stats that tell us whether the flow actually uses the conditioner.
+
+    You should call this from the validation loop where you already have cond and per-step outputs.
+    """
+    if writer is None:
+        return
+    scalars = {}
+    if cond_norm is not None:
+        scalars['flow/cond_norm'] = float(cond_norm)
+    if mean_s is not None:
+        scalars['flow/mean_s'] = float(mean_s)
+    if max_s is not None:
+        scalars['flow/max_s'] = float(max_s)
+    if logdet is not None:
+        scalars['flow/logdet'] = float(logdet)
+    for k, v in scalars.items():
+        try:
+            writer.add_scalar(k, v, global_step=step)
+        except Exception:
+            pass
+
+
+def tb_log_flow_hist(
+    writer: 'SummaryWriter',
+    tag: str,
+    step: int,
+    dists: torch.Tensor,
+) -> None:
+    """Log 1D histogram of distances from samples to teacher (helps see collapse)."""
+    if writer is None:
+        return
+    if dists is None or dists.numel() == 0:
+        return
+    vals = dists.detach().cpu().numpy().astype(np.float32)
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(figsize=(4, 3), dpi=140)
+    ax.hist(vals, bins=30, color='tab:blue', alpha=0.7)
+    ax.set_title('Flow sample → teacher distances')
+    ax.set_xlabel('L2 distance'); ax.set_ylabel('count')
+    fig.tight_layout()
+    import io, imageio
+    buf = io.BytesIO(); fig.savefig(buf, format='png'); plt.close(fig)
+    buf.seek(0)
+    img = imageio.v2.imread(buf)
+    chw = np.transpose(img, (2, 0, 1))
+    writer.add_image(tag, chw, global_step=step)
+
 
 class FixedProjector2D:
     """Fixed 2D projector for consistent plots across time.

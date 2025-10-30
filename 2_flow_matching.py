@@ -24,6 +24,9 @@ from visualization import (
     tb_log_vector_projection,
     FixedProjector2D,
     tb_log_knn_convergence,
+    tb_log_flow_samples_2d,
+    tb_log_flow_stats,
+    tb_log_flow_hist,
 )
 
 # ------------------
@@ -372,21 +375,30 @@ class Teacher(nn.Module):
 # --------------------------------------------
 # Conditional Normalizing Flow (RealNVP-style)
 # --------------------------------------------
-class ContextPooler(nn.Module):
+class CondCrossAttention(nn.Module):
     """
-    Pools context tokens into a single conditioning vector h_c \in R^D per sample.
-    We use masked mean over visible context tokens, followed by LayerNorm.
+    Per-target conditioning via cross-attention:
+    query  = target positional embeddings (plus learned target token)
+    key/val = context tokens
+    Output: [B, St, D] per target, aligned with target positions.
     """
-    def __init__(self, dim: int):
+    def __init__(self, dim: int, num_heads: int = 4):
         super().__init__()
-        self.norm = nn.LayerNorm(dim)
+        self.tgt_token = nn.Parameter(torch.zeros(1, 1, dim))
+        self.attn = nn.MultiheadAttention(dim, num_heads, batch_first=True)
+        self.ln = nn.LayerNorm(dim)
 
-    def forward(self, ctx_tokens: torch.Tensor, ctx_pad: torch.Tensor) -> torch.Tensor:
-        # ctx_tokens: [B, Sc, D], ctx_pad: [B, Sc] (True = pad)
-        mask = (~ctx_pad).float().unsqueeze(-1)  # [B,Sc,1]
-        denom = torch.clamp(mask.sum(dim=1), min=1.0)  # [B,1]
-        pooled = (ctx_tokens * mask).sum(dim=1) / denom  # [B,D]
-        return self.norm(pooled)
+    def forward(self, ctx_tokens: torch.Tensor, ctx_pad: torch.Tensor, tgt_pos: torch.Tensor) -> torch.Tensor:
+        # ctx_tokens: [B, Sc, D], ctx_pad: [B, Sc] (True=pad), tgt_pos: [B, St, D]
+        B, St, D = tgt_pos.size()
+        # broadcast learned target token to [B, St, D]
+        tgt_tok = self.tgt_token.expand(B, St, D)
+        query = tgt_pos + tgt_tok                      # [B, St, D]
+        # MultiheadAttention with batch_first=True
+        # key_padding_mask: [B, Sc], True = ignore
+        h, _ = self.attn(query, ctx_tokens, ctx_tokens, key_padding_mask=ctx_pad)  # [B, St, D]
+        h = self.ln(h)
+        return h
 
 class AffineCoupling(nn.Module):
     """
@@ -476,65 +488,62 @@ class ActNorm1D(nn.Module):
         scale = torch.exp(self.log_scale)
         return (x + self.bias) * scale
 
-class FlowBatchNorm1D(nn.Module):
+
+# ---- New: FlowActNorm1D for flows with exact log-det ----
+class FlowActNorm1D(nn.Module):
     """
-    BatchNorm for flows over feature dimension with exact log-det.
-    Acts on shape [N, D]. During training uses batch stats and updates running
-    averages; during eval uses running stats (invertible, data-independent).
-    y = ((x - mean) / sqrt(var + eps)) * gamma + beta
-    log|det J| per-sample = sum(log|gamma| - 0.5*log(var+eps))
+    Glow-style ActNorm for flows over feature dimension with exact log-det.
+    Acts on shape [N, D]. Uses data-dependent init on first training batch.
+    y = (x + bias) * exp(log_scale)
+    log|det J| per-sample = sum(log_scale)
     """
-    def __init__(self, dim: int, eps: float = 1e-5, momentum: float = 0.1):
+    def __init__(self, dim: int, eps: float = 1e-6):
         super().__init__()
         self.dim = dim
         self.eps = eps
-        self.momentum = momentum
-        self.gamma = nn.Parameter(torch.ones(dim))
-        self.beta = nn.Parameter(torch.zeros(dim))
-        self.register_buffer('running_mean', torch.zeros(dim))
-        self.register_buffer('running_var', torch.ones(dim))
+        self.bias = nn.Parameter(torch.zeros(dim))
+        self.log_scale = nn.Parameter(torch.zeros(dim))
+        self.register_buffer('initialized', torch.tensor(False, dtype=torch.bool))
+
+    def _initialize(self, x: torch.Tensor):
+        flat = x.reshape(-1, self.dim)
+        if flat.numel() == 0:
+            return
+        mean = flat.mean(dim=0)
+        std = flat.std(dim=0, unbiased=False).clamp_min(self.eps)
+        with torch.no_grad():
+            self.bias.copy_(-mean)
+            self.log_scale.copy_(torch.log(1.0 / std))
+            self.initialized.fill_(True)
 
     def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        if self.training:
-            mean = x.mean(dim=0)
-            var = x.var(dim=0, unbiased=False).clamp_min(1e-12)
-            # Update running stats (PyTorch BN convention)
-            self.running_mean.lerp_(mean, self.momentum)
-            self.running_var.lerp_(var, self.momentum)
-        else:
-            mean = self.running_mean
-            var = self.running_var
-        inv_std = torch.rsqrt(var + self.eps)
-        y = (x - mean) * inv_std * self.gamma + self.beta
-        # log-det per sample: sum over features
-        logdet = torch.sum(torch.log(torch.abs(self.gamma) + 1e-12) - 0.5 * torch.log(var + self.eps), dim=0)
-        logdet = logdet.expand(x.size(0)).to(x.dtype).to(x.device)
+        if not bool(self.initialized.item()) and self.training:
+            self._initialize(x.detach())
+        y = (x + self.bias) * torch.exp(self.log_scale)
+        # log-det per sample: sum over features of log_scale
+        logdet = torch.sum(self.log_scale, dim=0).expand(x.size(0)).to(x.dtype).to(x.device)
         return y, logdet
 
     def inverse(self, y: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        # Use running stats for inverse (as in eval/inference)
-        mean = self.running_mean
-        var = self.running_var.clamp_min(1e-12)
-        std = torch.sqrt(var + self.eps)
-        x = (y - self.beta) / (self.gamma + 1e-12) * std + mean
-        logdet = torch.sum(-torch.log(torch.abs(self.gamma) + 1e-12) + 0.5 * torch.log(var + self.eps), dim=0)
-        logdet = logdet.expand(y.size(0)).to(y.dtype).to(y.device)
+        x = y * torch.exp(-self.log_scale) - self.bias
+        logdet = torch.sum(-self.log_scale, dim=0).expand(y.size(0)).to(y.dtype).to(y.device)
         return x, logdet
 
+
 class FlowStep(nn.Module):
-    """One coupling + batchnorm step with forward/inverse and log-det tracking."""
+    """One coupling + actnorm step with forward/inverse and log-det tracking."""
     def __init__(self, dim: int, cond_dim: int, hidden: int, mask: torch.Tensor):
         super().__init__()
         self.coupling = AffineCoupling(dim, cond_dim, hidden, mask)
-        self.bn = FlowBatchNorm1D(dim)
+        self.an = FlowActNorm1D(dim)
 
     def forward(self, z: torch.Tensor, cond: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         x, ld1 = self.coupling(z, cond)
-        x, ld2 = self.bn(x)
+        x, ld2 = self.an(x)
         return x, ld1 + ld2
 
     def inverse(self, x: torch.Tensor, cond: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        y, ld2 = self.bn.inverse(x)
+        y, ld2 = self.an.inverse(x)
         z, ld1 = self.coupling.inverse(y, cond)
         return z, ld1 + ld2
 
@@ -549,13 +558,11 @@ class CondRealNVPFlow(nn.Module):
     def __init__(self, dim: int, cond_dim: int, num_layers: int = NF_LAYERS, hidden: int = NF_HIDDEN):
         super().__init__()
         masks = []
-        # Alternate 0/1 masks per step to cover all dims
-        for k in range(num_layers):
+        # Random binary masks per step (~half dims active)
+        for _ in range(num_layers):
             mask = torch.zeros(dim)
-            if k % 2 == 0:
-                mask[: dim // 2] = 1.0
-            else:
-                mask[dim // 2 :] = 1.0
+            idx = torch.randperm(dim)[: dim // 2]
+            mask[idx] = 1.0
             masks.append(mask)
         self.layers = nn.ModuleList([FlowStep(dim, cond_dim, hidden, m) for m in masks])
         self.dim = dim
@@ -786,16 +793,28 @@ def train_run():
     # init teacher = student
     teacher.ema_update(student, m=0.0)
     nf = CondRealNVPFlow(dim=HIDDEN_DIM, cond_dim=HIDDEN_DIM, num_layers=NF_LAYERS, hidden=NF_HIDDEN).to(DEVICE)
-    pooler = ContextPooler(HIDDEN_DIM).to(DEVICE)
+    xattn = CondCrossAttention(HIDDEN_DIM, num_heads=4).to(DEVICE)
     cond_norm = ActNorm1D(HIDDEN_DIM, eps=COND_ACTNORM_EPS).to(DEVICE)
 
-    params_all = (
-        list(student.parameters())
-        + list(nf.parameters())
-        + list(pooler.parameters())
-        + list(cond_norm.parameters())
-    )
-    opt = torch.optim.AdamW(params_all, lr=LR, weight_decay=WEIGHT_DECAY)
+    def build_param_groups(modules):
+        decay, no_decay = [], []
+        for m in modules:
+            for n, p in m.named_parameters():
+                if not p.requires_grad:
+                    continue
+                # Apply WD only to sufficiently-matrix-like weights (e.g., Linear.weight)
+                if n.endswith('weight') and p.ndim >= 2:
+                    decay.append(p)
+                else:
+                    # biases, LayerNorm/ActNorm scale/bias, embeddings, etc.
+                    no_decay.append(p)
+        return [
+            {'params': decay, 'weight_decay': WEIGHT_DECAY},
+            {'params': no_decay, 'weight_decay': 0.0},
+        ]
+
+    param_groups = build_param_groups([student, nf, xattn, cond_norm])
+    opt = torch.optim.AdamW(param_groups, lr=LR)
 
     writer.add_text('hparams', str({
         'PATCH_SIZE': PATCH_SIZE,
@@ -832,9 +851,9 @@ def train_run():
             except Exception:
                 print("[resume] Could not load 'nf' state_dict from checkpoint (may be absent)")
             try:
-                pooler.load_state_dict(state['pooler'], strict=True)
+                xattn.load_state_dict(state['xattn'], strict=True)
             except Exception:
-                print("[resume] Could not load 'pooler' state_dict from checkpoint (may be absent)")
+                print("[resume] Could not load 'xattn' state_dict from checkpoint (may be absent)")
             try:
                 cond_norm.load_state_dict(state['cond_norm'], strict=True)
             except Exception:
@@ -871,7 +890,7 @@ def train_run():
 
     steps_done = 0
     for epoch in range(EPOCHS):
-        student.train(); nf.train(); pooler.train(); cond_norm.train()
+        student.train(); nf.train(); xattn.train(); cond_norm.train()
         for batch_idx, (x, _) in enumerate(train_loader, start=1):
             x = x.to(DEVICE, non_blocking=True)
             B = x.size(0)
@@ -909,15 +928,9 @@ def train_run():
             ctx_tokens, ctx_pad = student.encode_context(x, context_mask)
 
             # --- Conditional RealNVP: MLE over teacher targets given context ---
-            # 1) Build per-target conditioning vectors: h_c (pooled ctx) + positional encodings
-            h_c = pooler(ctx_tokens, ctx_pad)  # [B,D]
-            B_, St_, D_ = teacher_tgt.size()
-            cond = torch.zeros((B_, St_, D_), device=x.device, dtype=teacher_tgt.dtype)
-            for i, idx in enumerate(tgt_idxs):
-                L = int(idx.numel())
-                if L == 0:
-                    continue
-                cond[i, :L] = h_c[i].unsqueeze(0) + pos_t[i, :L]  # [L,D]
+            # 1) Build per-target conditioning vectors via cross-attention
+            cond_attn = xattn(ctx_tokens, ctx_pad, pos_t)  # [B, St, D]
+            cond = cond_attn + pos_t
             # 2) Flatten visible targets and cond
             visible = (~tgt_pad)
             if visible.any():
@@ -965,7 +978,7 @@ def train_run():
             gn = torch.nn.utils.clip_grad_norm_(
                 list(student.parameters())
                 + list(nf.parameters())
-                + list(pooler.parameters())
+                + list(xattn.parameters())
                 + list(cond_norm.parameters()),
                 GRAD_CLIP_MAX_NORM,
             )
@@ -976,7 +989,7 @@ def train_run():
             # Gradient diagnostics (directional stability, sign distribution)
             try:
                 grads = []
-                for p in list(student.parameters()) + list(nf.parameters()) + list(pooler.parameters()) + list(cond_norm.parameters()):
+                for p in list(student.parameters()) + list(nf.parameters()) + list(xattn.parameters()) + list(cond_norm.parameters()):
                     if p.grad is not None:
                         grads.append(p.grad.detach().flatten())
                 if grads:
@@ -1093,13 +1106,8 @@ def train_run():
                                 pos_tv[i, :Lv] = pos[0, ix]
                             ctx_tok, ctx_pad = student.encode_context(vx, cmask)
                             # Build pos_tv and cond for validation
-                            h_c_v = pooler(ctx_tok, ctx_pad)  # [Bv,D]
-                            cond_v = torch.zeros((Bv, Stv, Dv), device=vx.device, dtype=ttok.dtype)
-                            for i, ix in enumerate(tidx):
-                                Lv = int(ix.numel())
-                                if Lv == 0:
-                                    continue
-                                cond_v[i, :Lv] = h_c_v[i].unsqueeze(0) + pos_tv[i, :Lv]
+                            cond_v = xattn(ctx_tok, ctx_pad, pos_tv)  # [Bv, Stv, Dv]
+                            cond_v = cond_v + pos_tv
                             visible_v = (~tpad)
                             if visible_v.any():
                                 cond_v_vis = cond_v[visible_v]
@@ -1119,6 +1127,39 @@ def train_run():
                                 val_align_acc += float(align_v.item())
                                 val_var_acc += float(var_v.item())
                                 val_cov_acc += float(cov_v.item())
+
+                                # --- extra flow viz on val (first batch only) ---
+                                if vb_idx == 0:
+                                    # pick the first visible target
+                                    # cv_flat: (N_vis, D), yhat_v_flat: (N_vis, D), teach_v: (Bv, Stv, D)
+                                    cond_sample = cv_flat[0:1]  # (1, D)
+                                    teach_sample = teach_v[visible_v][0:1]  # (1, D)
+                                    K = 32
+                                    cond_rep = cond_sample.repeat(K, 1)
+                                    z = torch.randn(K, HIDDEN_DIM, device=cond_rep.device, dtype=cond_rep.dtype)
+                                    x_samp, logdet_samp = nf.forward(z, cond_rep)
+                                    tb_log_flow_samples_2d(
+                                        writer,
+                                        tag='val/flow_samples_2d',
+                                        step=samples_seen,
+                                        flow_samples=x_samp.detach(),
+                                        teacher_vec=teach_sample.squeeze(0).detach(),
+                                    )
+                                    dists = (x_samp - teach_sample).norm(dim=-1)
+                                    tb_log_flow_hist(
+                                        writer,
+                                        tag='val/flow_sample_dists',
+                                        step=samples_seen,
+                                        dists=dists,
+                                    )
+                                    cond_norm_val = cond_sample.norm(dim=-1).mean().item()
+                                    tb_log_flow_stats(
+                                        writer,
+                                        step=samples_seen,
+                                        cond_norm=cond_norm_val,
+                                        logdet=float(logdet_samp.mean().item()),
+                                    )
+
                                 n_batches += 1
                     if n_batches > 0:
                         vloss = val_loss_acc / n_batches
@@ -1148,7 +1189,7 @@ def train_run():
                     'student': student.state_dict(),
                     'teacher': teacher.state_dict(),
                     'nf': nf.state_dict(),
-                    'pooler': pooler.state_dict(),
+                    'xattn': xattn.state_dict(),
                     'cond_norm': cond_norm.state_dict(),
                     'opt': opt.state_dict(),
                     'samples_seen': samples_seen,
@@ -1187,7 +1228,7 @@ def train_run():
         'student': student.state_dict(),
         'teacher': teacher.state_dict(),
         'nf': nf.state_dict(),
-        'pooler': pooler.state_dict(),
+        'xattn': xattn.state_dict(),
         'cond_norm': cond_norm.state_dict(),
         'opt': opt.state_dict(),
         'samples_seen': samples_seen,
