@@ -457,18 +457,38 @@ class SinusoidalTimeEmbedding(nn.Module):
         return emb
 
 
-class ContextPooler(nn.Module):
-    """Pool context tokens into a single conditioning vector."""
+class CondCrossAttention(nn.Module):
+    """
+    Per-target conditioning via cross-attention:
+    query  = target positional embeddings (plus learned target token)
+    key/val = context tokens
+    Output: [B, St, D] per target, aligned with target positions.
+    """
 
-    def __init__(self, dim: int):
+    def __init__(self, dim: int, num_heads: int = 4):
         super().__init__()
-        self.norm = nn.LayerNorm(dim)
+        self.tgt_token = nn.Parameter(torch.zeros(1, 1, dim))
+        self.attn = nn.MultiheadAttention(dim, num_heads, batch_first=True)
+        self.ln = nn.LayerNorm(dim)
 
-    def forward(self, ctx_tokens: torch.Tensor, ctx_pad: torch.Tensor) -> torch.Tensor:
-        mask = (~ctx_pad).float().unsqueeze(-1)
-        denom = torch.clamp(mask.sum(dim=1), min=1.0)
-        pooled = (ctx_tokens * mask).sum(dim=1) / denom
-        return self.norm(pooled)
+    def forward(
+        self,
+        ctx_tokens: torch.Tensor,
+        ctx_pad: torch.Tensor,
+        tgt_pos: torch.Tensor,
+    ) -> torch.Tensor:
+        # ctx_tokens: [B, Sc, D], ctx_pad: [B, Sc] (True=pad), tgt_pos: [B, St, D]
+        B, St, D = tgt_pos.size()
+        # broadcast learned target token to [B, St, D]
+        tgt_tok = self.tgt_token.expand(B, St, D)
+        query = tgt_pos + tgt_tok  # [B, St, D]
+        # MultiheadAttention with batch_first=True
+        # key_padding_mask: [B, Sc], True = ignore
+        h, _ = self.attn(
+            query, ctx_tokens, ctx_tokens, key_padding_mask=ctx_pad
+        )  # [B, St, D]
+        h = self.ln(h)
+        return h
 
 
 class ResidualBlock(nn.Module):
@@ -848,14 +868,27 @@ def train_run():
     predictor = UNetDiffusionPredictor(
         HIDDEN_DIM, TIME_EMB_DIM, UNET_DEPTH, UNET_HIDDEN_MULT, UNET_NUM_HEADS
     ).to(DEVICE)
-    pooler = ContextPooler(HIDDEN_DIM).to(DEVICE)
+    xattn = CondCrossAttention(HIDDEN_DIM, num_heads=4).to(DEVICE)
 
-    params_all = (
-        list(student.parameters())
-        + list(predictor.parameters())
-        + list(pooler.parameters())
-    )
-    opt = torch.optim.AdamW(params_all, lr=LR, weight_decay=WEIGHT_DECAY)
+    def build_param_groups(modules):
+        decay, no_decay = [], []
+        for m in modules:
+            for n, p in m.named_parameters():
+                if not p.requires_grad:
+                    continue
+                # Apply WD only to sufficiently-matrix-like weights (e.g., Linear.weight)
+                if n.endswith("weight") and p.ndim >= 2:
+                    decay.append(p)
+                else:
+                    # biases, LayerNorm/ActNorm scale/bias, embeddings, etc.
+                    no_decay.append(p)
+        return [
+            {"params": decay, "weight_decay": WEIGHT_DECAY},
+            {"params": no_decay, "weight_decay": 0.0},
+        ]
+
+    param_groups = build_param_groups([student, predictor, xattn])
+    opt = torch.optim.AdamW(param_groups, lr=LR)
 
     writer.add_text(
         "hparams",
@@ -894,7 +927,12 @@ def train_run():
             student.load_state_dict(state["student"], strict=True)
             teacher.load_state_dict(state["teacher"], strict=True)
             predictor.load_state_dict(state["predictor"], strict=True)
-            pooler.load_state_dict(state["pooler"], strict=True)
+            try:
+                xattn.load_state_dict(state["xattn"], strict=True)
+            except Exception:
+                print(
+                    "[resume] Could not load 'xattn' state_dict from checkpoint (may be absent)"
+                )
             opt.load_state_dict(state["opt"])
             samples_seen = int(state.get("samples_seen", 0))
             last_log_samples = int(state.get("last_log_samples", samples_seen))
@@ -923,7 +961,7 @@ def train_run():
     for epoch in range(EPOCHS):
         student.train()
         predictor.train()
-        pooler.train()
+        xattn.train()
         for batch_idx, (x, _) in enumerate(train_loader, start=1):
             x = x.to(DEVICE, non_blocking=True)
             B = x.size(0)
@@ -959,15 +997,8 @@ def train_run():
                 pos_t[i, :L] = pos[0, idx]
 
             ctx_tokens, ctx_pad = student.encode_context(x, context_mask)
-
-            h_c = pooler(ctx_tokens, ctx_pad)
-            B_, St_, D_ = teacher_tgt.size()
-            cond = torch.zeros((B_, St_, D_), device=x.device, dtype=teacher_tgt.dtype)
-            for i, idx in enumerate(tgt_idxs):
-                L = int(idx.numel())
-                if L == 0:
-                    continue
-                cond[i, :L] = h_c[i].unsqueeze(0) + pos_t[i, :L]
+            cond_attn = xattn(ctx_tokens, ctx_pad, pos_t)
+            cond = cond_attn + pos_t
 
             visible = ~tgt_pad
             if visible.any():
@@ -1008,7 +1039,7 @@ def train_run():
             gn = torch.nn.utils.clip_grad_norm_(
                 list(student.parameters())
                 + list(predictor.parameters())
-                + list(pooler.parameters()),
+                + list(xattn.parameters()),
                 GRAD_CLIP_MAX_NORM,
             )
             opt.step()
@@ -1020,7 +1051,7 @@ def train_run():
                 for p in (
                     list(student.parameters())
                     + list(predictor.parameters())
-                    + list(pooler.parameters())
+                    + list(xattn.parameters())
                 ):
                     if p.grad is not None:
                         grads.append(p.grad.detach().flatten())
@@ -1206,15 +1237,8 @@ def train_run():
                                 tpad[i, :Lv] = False
                                 pos_tv[i, :Lv] = pos[0, ix]
                             ctx_tok, ctx_pad = student.encode_context(vx, cmask)
-                            h_c_v = pooler(ctx_tok, ctx_pad)
-                            cond_v = torch.zeros(
-                                (Bv, Stv, Dv), device=vx.device, dtype=ttok.dtype
-                            )
-                            for i, ix in enumerate(tidx):
-                                Lv = int(ix.numel())
-                                if Lv == 0:
-                                    continue
-                                cond_v[i, :Lv] = h_c_v[i].unsqueeze(0) + pos_tv[i, :Lv]
+                            cond_attn_v = xattn(ctx_tok, ctx_pad, pos_tv)
+                            cond_v = cond_attn_v + pos_tv
                             visible_v = ~tpad
                             if visible_v.any():
                                 yv_flat = teach_v[visible_v]
@@ -1279,7 +1303,7 @@ def train_run():
                     "student": student.state_dict(),
                     "teacher": teacher.state_dict(),
                     "predictor": predictor.state_dict(),
-                    "pooler": pooler.state_dict(),
+                    "xattn": xattn.state_dict(),
                     "opt": opt.state_dict(),
                     "samples_seen": samples_seen,
                     "steps_done": steps_done,
@@ -1319,7 +1343,7 @@ def train_run():
         "student": student.state_dict(),
         "teacher": teacher.state_dict(),
         "predictor": predictor.state_dict(),
-        "pooler": pooler.state_dict(),
+        "xattn": xattn.state_dict(),
         "opt": opt.state_dict(),
         "samples_seen": samples_seen,
         "best_knn": best_knn,
