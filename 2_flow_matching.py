@@ -4,6 +4,8 @@ import random
 from typing import Tuple, List, Optional, Dict, Any
 
 import numpy as np
+import torch.serialization
+torch.serialization.add_safe_globals([np.core.multiarray._reconstruct, np.ndarray])
 import subprocess
 import time
 import socket
@@ -843,7 +845,8 @@ def train_run():
     os.makedirs(CHECKPOINT_DIR, exist_ok=True)
     if os.path.isfile(LAST_CKPT):
         try:
-            state = torch.load(LAST_CKPT, map_location=DEVICE)
+            # Explicitly allow full unpickling for trusted local checkpoints
+            state = torch.load(LAST_CKPT, map_location=DEVICE, weights_only=False)
             student.load_state_dict(state['student'], strict=True)
             teacher.load_state_dict(state['teacher'], strict=True)
             try:
