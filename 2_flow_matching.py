@@ -4,8 +4,6 @@ import random
 from typing import Tuple, List, Optional, Dict, Any
 
 import numpy as np
-import torch.serialization
-torch.serialization.add_safe_globals([np.core.multiarray._reconstruct, np.ndarray])
 import subprocess
 import time
 import socket
@@ -38,7 +36,7 @@ NUM_CLASSES = 100
 IMAGE_SIZE = 64
 EPOCHS = 400
 BATCH_SIZE = 600
-LR = 5e-5                     # Small constant learning rate
+LR = 5e-5
 WEIGHT_DECAY = 1e-4
 DEVICE_TYPE = (
     'mps'
@@ -119,11 +117,10 @@ def _proxy_url(port: int, suffix: str, absolute: bool = True) -> str:
         os.environ.get('JUPYTERHUB_ROOT_URL') or
         os.environ.get('NB_URL') or
         os.environ.get('NB_HOST') or
-        os.environ.get('AIM_UI_ORIGIN') or 'https://45957f89c897.innodatahub.innopolis.university'
+        os.environ.get('AIM_UI_ORIGIN') or 'https://xxxxxxxxxxxx.innodatahub.innopolis.university'
     )
     root = root.rstrip('/')
     return f"{root}{rel}"
-
 
 def start_tb_ui(logdir: str = os.path.abspath('./runs'), port: int = 43802, suffix: str = 'tb-sage') -> Optional[str]:
     try:
