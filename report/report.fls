@@ -1,7 +1,7 @@
 PWD /Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/web2c/texmf.cnf
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT report.tex
+INPUT /Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex
 OUTPUT report.log
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/ieeetran/IEEEtran.cls
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/ieeetran/IEEEtran.cls

@@ -1,13 +1,14 @@
 # Fdb version 4
-["bibtex report"] 1763656844.02862 "report.aux" "report.bbl" "report" 1763656846.01318 0
+["bibtex report"] 1763667455.18752 "report.aux" "report.bbl" "report" 1763667460.92354 0
   "./references.bib" 1763646169.66115 5343 ddb289b0056f589ecbcf9d2c56e8509e ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1741388039 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "report.aux" 1763656845.81979 6408 dfeb041864db5e3c2d24b740cbaa4893 "pdflatex"
+  "report.aux" 1763667460.74858 6408 dfeb041864db5e3c2d24b740cbaa4893 "pdflatex"
   (generated)
   "report.bbl"
   "report.blg"
   (rewritten before read)
-["pdflatex"] 1763656844.10176 "report.tex" "report.pdf" "report" 1763656846.01331 0
+["pdflatex"] 1763667459.03306 "/Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex" "report.pdf" "report" 1763667460.92367 0
+  "/Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex" 1763667458.97818 24952 83c2a9c4f90376aeeb68e3cc643a1947 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1741388039 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/fontname/texfonts.map" 1741388039 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/pdftex/updmap/pdftex.map" 1741388039 5466553 2748998d7db8078826afa1f272036265 ""
@@ -101,9 +102,9 @@
   "figures/mdn_distribution_3d.png" 1763653380.17651 300766 aad524d5cc0b289771d566e3f11052a9 ""
   "figures/mdn_samples_hex.png" 1763646801.0575 216751 dc2687ce51eb12fe440741aa962a35fd ""
   "figures/pca_means_samples_targets.png" 1763646185.76867 34840 87c18e755da233e0c6496b58ae525075 ""
-  "report.aux" 1763656845.81979 6408 dfeb041864db5e3c2d24b740cbaa4893 "pdflatex"
-  "report.bbl" 1763656844.10002 5873 8dca4cd5c06b09796de8e3a37695846b "bibtex report"
-  "report.tex" 1763656837.57323 24966 22b3abff76ab6f9d5ab77590d7c0a847 ""
+  "report.aux" 1763667460.74858 6408 dfeb041864db5e3c2d24b740cbaa4893 "pdflatex"
+  "report.bbl" 1763667455.25863 5791 44fd3c8880adb49ba00f63f8d329a439 "bibtex report"
+  "report.tex" 1763667458.97818 24952 83c2a9c4f90376aeeb68e3cc643a1947 ""
   (generated)
   "report.aux"
   "report.log"
