@@ -1,0 +1,19 @@
+{
+  "run_id": "20251117-100241",
+  "config": {
+    "PATCH_SIZE": 8,
+    "HIDDEN_DIM": 384,
+    "VIT_LAYERS": 10,
+    "VIT_HEADS": 8,
+    "NUM_TARGET_BLOCKS": 4,
+    "LR": 5e-05,
+    "WEIGHT_DECAY": 0.0001,
+    "BATCH_SIZE": 64,
+    "IMAGE_SIZE": 64,
+    "EPOCHS": 60,
+    "DEVICE": "cuda",
+    "DIFFUSION_TIMESTEPS": 1000,
+    "UNET_DEPTH": 3
+  },
+  "run_path": "/home/jovyan/sber_courses/diffusion_nn/diffusion_nn_starikova/local_logs/20251117-100241"
+}

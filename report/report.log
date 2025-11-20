@@ -1,0 +1,691 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.3.15)  20 NOV 2025 19:40
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**report.tex
+(./report.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/ieeetran/IE
+EEtran.cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+\@IEEEtrantmpdimenA=\dimen141
+\@IEEEtrantmpdimenB=\dimen142
+\@IEEEtrantmpdimenC=\dimen143
+\@IEEEtrantmpcountA=\count196
+\@IEEEtrantmpcountB=\count197
+\@IEEEtrantmpcountC=\count198
+\@IEEEtrantmptoksA=\toks17
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 5
+03.
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/ot1p
+tm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+\@IEEEnormalsizeunitybaselineskip=\dimen144
+-- This is a 10 point document.
+\CLASSINFOnormalsizebaselineskip=\dimen145
+\CLASSINFOnormalsizeunitybaselineskip=\dimen146
+\IEEEnormaljot=\dimen147
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <11> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <11> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <17> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+\IEEEquantizedlength=\dimen148
+\IEEEquantizedlengthdiff=\dimen149
+\IEEEquantizedtextheightdiff=\dimen150
+\IEEEilabelindentA=\dimen151
+\IEEEilabelindentB=\dimen152
+\IEEEilabelindent=\dimen153
+\IEEEelabelindent=\dimen154
+\IEEEdlabelindent=\dimen155
+\IEEElabelindent=\dimen156
+\IEEEiednormlabelsep=\dimen157
+\IEEEiedmathlabelsep=\dimen158
+\IEEEiedtopsep=\skip49
+\c@section=\count199
+\c@subsection=\count266
+\c@subsubsection=\count267
+\c@paragraph=\count268
+\c@IEEEsubequation=\count269
+\abovecaptionskip=\skip50
+\belowcaptionskip=\skip51
+\c@figure=\count270
+\c@table=\count271
+\@IEEEeqnnumcols=\count272
+\@IEEEeqncolcnt=\count273
+\@IEEEsubeqnnumrollback=\count274
+\@IEEEquantizeheightA=\dimen159
+\@IEEEquantizeheightB=\dimen160
+\@IEEEquantizeheightC=\dimen161
+\@IEEEquantizeprevdepth=\dimen162
+\@IEEEquantizemultiple=\count275
+\@IEEEquantizeboxA=\box52
+\@IEEEtmpitemindent=\dimen163
+\IEEEPARstartletwidth=\dimen164
+\c@IEEEbiography=\count276
+\@IEEEtranrubishbin=\box53
+)
+** ATTENTION: Overriding command lockouts (line 2).
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/cite/cite.s
+ty
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 332.
+Package: cite 2015/02/27  v 5.5
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsmath/ams
+math.sty
+Package: amsmath 2024/11/05 v2.17t AMS math features
+\@mathmargin=\skip52
+For additional information on amsmath, use the `?' option.
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsmath/ams
+text.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsmath/ams
+gen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks18
+\ex@=\dimen165
+))
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsmath/ams
+bsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen166
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsmath/ams
+opn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count277
+LaTeX Info: Redefining \frac on input line 233.
+\uproot@=\count278
+\leftroot@=\count279
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count280
+\DOTSCASE@=\count281
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box54
+\strutbox@=\box55
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen167
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count282
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count283
+\dotsspace@=\muskip17
+\c@parentequation=\count284
+\dspbrk@lvl=\count285
+\tag@help=\toks19
+\row@=\count286
+\column@=\count287
+\maxfields@=\count288
+\andhelp@=\toks20
+\eqnshift@=\dimen168
+\alignsep@=\dimen169
+\tagshift@=\dimen170
+\tagwidth@=\dimen171
+\totwidth@=\dimen172
+\lineht@=\dimen173
+\@envbody=\toks21
+\multlinegap=\skip53
+\multlinetaggap=\skip54
+\mathdisplay@stack=\toks22
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsfonts/am
+ssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsfonts/am
+sfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/graphics/gr
+aphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/graphics/ke
+yval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks23
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/graphics/gr
+aphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/graphics/tr
+ig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/graphics-cf
+g/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/graphics-de
+f/pdftex.def
+File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen174
+\Gin@req@width=\dimen175
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/base/textco
+mp.sty
+Package: textcomp 2024/04/24 v2.1b Standard LaTeX package
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/xcolor/xcol
+or.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/graphics-cf
+g/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/graphics/ma
+thcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip18
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/booktabs/bo
+oktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen176
+\lightrulewidth=\dimen177
+\cmidrulewidth=\dimen178
+\belowrulesep=\dimen179
+\belowbottomsep=\dimen180
+\aboverulesep=\dimen181
+\abovetopsep=\dimen182
+\cmidrulesep=\dimen183
+\cmidrulekern=\dimen184
+\defaultaddspace=\dimen185
+\@cmidla=\count289
+\@cmidlb=\count290
+\@aboverulesep=\dimen186
+\@belowrulesep=\dimen187
+\@thisruleclass=\count291
+\@lastruleclass=\count292
+\@thisrulewidth=\dimen188
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/tools/array
+.sty
+Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
+\col@sep=\dimen189
+\ar@mcellbox=\box56
+\extrarowheight=\dimen190
+\NC@list=\toks24
+\extratabsurround=\skip55
+\backup@length=\skip56
+\ar@cellbox=\box57
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/l3backend/l
+3backend-pdftex.def
+File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count293
+\l__pdf_internal_box=\box58
+) (./report.aux)
+\openout1 = `report.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+-- Lines per column: 56 (exact).
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/context/base/mkii
+/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count294
+\scratchdimen=\dimen191
+\scratchbox=\box59
+\nofMPsegments=\count295
+\nofMParguments=\count296
+\everyMPshowfont=\toks25
+\MPscratchCnt=\count297
+\MPscratchDim=\dimen192
+\MPnumerator=\count298
+\makeMPintoPDFobject=\count299
+\everyMPtoPDFconversion=\toks26
+)
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/epstopdf-pk
+g/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/latexconfig
+/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 2
+6.
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/omsp
+tm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 26.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 50.
+
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsfonts/um
+sa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 50.
+
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsfonts/um
+sb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+
+
+
+[1{/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/pdftex/up
+dmap/pdftex.map}{/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts
+/enc/dvips/base/8r.enc}
+
+
+]
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 8
+3.
+
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/ot1p
+cr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+
+
+Underfull \hbox (badness 3148) in paragraph at lines 103--104
+\OT1/ptm/m/n/10 em-bed-dings and fac-tor-izes the joint den-sity into one-
+ []
+
+
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 113--118
+[]\OT1/ptm/m/n/10 Repository: $\OMS/cmsy/m/n/10 h\OT1/ptm/m/n/10 insertGitHubUR
+L[]$ (re-place with the
+ []
+
+
+Underfull \hbox (badness 6825) in paragraph at lines 113--118
+\OT1/ptm/m/n/10 pub-lic link be-fore sub-mis-sion). Fold-ers map 1:1 to
+ []
+
+
+Underfull \hbox (badness 4699) in paragraph at lines 113--118
+\OT1/ptm/m/n/10 pre-dic-tor vari-ants (\OT1/pcr/m/n/10 I-JEPA\OT1/ptm/m/n/10 , 
+\OT1/pcr/m/n/10 MDN\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 autoregression\OT1/ptm/m/n
+/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 113--118
+\OT1/ptm/m/n/10 and \OT1/pcr/m/n/10 diffusion/scalars (2).json\OT1/ptm/m/n/10 ,
+ and the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 113--118
+\OT1/ptm/m/n/10 de-ter-min-is-tic base-line check-point is ver-sioned in
+ []
+
+
+Overfull \hbox (14.5pt too wide) in paragraph at lines 113--118
+\OT1/pcr/m/n/10 BionicEye/representation/current/checkpoints\OT1/ptm/m/n/10 .
+ []
+
+
+Underfull \hbox (badness 3417) in paragraph at lines 113--118
+\OT1/ptm/m/n/10 The \OT1/pcr/m/n/10 analysis/ \OT1/ptm/m/n/10 folder cen-tral-i
+zes eval-u-a-tion util-i-ties:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 113--118
+\OT1/pcr/m/n/10 plot_losses.py \OT1/ptm/m/n/10 (Fig-ure 1[]), \OT1/pcr/m/n/10 p
+lot_knn.py
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 113--118
+\OT1/ptm/m/n/10 (Fig-ure 3[]), \OT1/pcr/m/n/10 compute_knn.py \OT1/ptm/m/n/10 (
+Ta-ble I[]),
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 113--118
+\OT1/pcr/m/n/10 eval_baseline_loss.py \OT1/ptm/m/n/10 (base-line sweep), and
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 113--118
+\OT1/pcr/m/n/10 compare_distributions.py \OT1/ptm/m/n/10 (Fig-ure 7[]). MDN-
+ []
+
+
+Underfull \hbox (badness 3735) in paragraph at lines 113--118
+\OT1/ptm/m/n/10 specific di-ag-nos-tics live in \OT1/pcr/m/n/10 MDN/visualize_m
+dn.py
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 113--118
+\OT1/ptm/m/n/10 and \OT1/pcr/m/n/10 analysis/mdn_distribution_3d.py\OT1/ptm/m/n
+/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 113--118
+\OT1/ptm/m/n/10 and the mask-ing il-lus-tra-tion is re-gen-er-ated via
+ []
+
+
+Underfull \hbox (badness 4108) in paragraph at lines 121--127
+\OT1/ptm/m/n/10 mal-izes them, and per-forms chun-ked co-sine kNN so
+ []
+
+
+
+<figures/combined_losses.png, id=20, 975.645pt x 289.08pt>
+File: figures/combined_losses.png Graphic file (type png)
+<use figures/combined_losses.png>
+Package pdftex.def Info: figures/combined_losses.png  used on input line 155.
+(pdftex.def)             Requested size: 242.52063pt x 71.85518pt.
+<figures/pca_means_samples_targets.png, id=22, 505.89pt x 505.89pt>
+File: figures/pca_means_samples_targets.png Graphic file (type png)
+<use figures/pca_means_samples_targets.png>
+Package pdftex.def Info: figures/pca_means_samples_targets.png  used on input l
+ine 162.
+(pdftex.def)             Requested size: 242.52063pt x 242.52338pt.
+<figures/combined_knn.png, id=23, 469.755pt x 303.534pt>
+File: figures/combined_knn.png Graphic file (type png)
+<use figures/combined_knn.png>
+Package pdftex.def Info: figures/combined_knn.png  used on input line 169.
+(pdftex.def)             Requested size: 242.52063pt x 156.70384pt.
+<figures/mdn_samples_hex.png, id=24, 433.62pt x 361.35pt>
+File: figures/mdn_samples_hex.png Graphic file (type png)
+<use figures/mdn_samples_hex.png>
+Package pdftex.def Info: figures/mdn_samples_hex.png  used on input line 176.
+(pdftex.def)             Requested size: 242.52063pt x 202.10098pt.
+<figures/mdn_distribution_3d.png, id=25, 433.62pt x 361.35pt>
+File: figures/mdn_distribution_3d.png Graphic file (type png)
+<use figures/mdn_distribution_3d.png>
+Package pdftex.def Info: figures/mdn_distribution_3d.png  used on input line 18
+3.
+(pdftex.def)             Requested size: 242.52063pt x 202.10098pt.
+<figures/mask_overlay.png, id=26, 289.08pt x 289.08pt>
+File: figures/mask_overlay.png Graphic file (type png)
+<use figures/mask_overlay.png>
+Package pdftex.def Info: figures/mask_overlay.png  used on input line 190.
+(pdftex.def)             Requested size: 242.52063pt x 242.52118pt.
+<figures/distribution_comparison.png, id=27, 867.24pt x 867.24pt>
+File: figures/distribution_comparison.png Graphic file (type png)
+<use figures/distribution_comparison.png>
+Package pdftex.def Info: figures/distribution_comparison.png  used on input lin
+e 197.
+(pdftex.def)             Requested size: 474.71906pt x 474.72064pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 202--204
+\OML/cmm/m/it/10 ^^[$ \OT1/ptm/m/n/10 his-tograms) re-side in \OT1/pcr/m/n/10 f
+igures/entropy.png\OT1/ptm/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 202--204
+\OT1/pcr/m/n/10 figures/mixture_weights.png\OT1/ptm/m/n/10 , and
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 202--204
+\OT1/pcr/m/n/10 figures/sigma_distribution.png\OT1/ptm/m/n/10 ; Fig-ure 5[]
+ []
+
+
+
+[3]
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 214--215
+[]\OT1/ptm/b/n/10 Log cov-er-age. \OT1/ptm/m/n/10 Flow/diffusion have com-plete
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 214--215
+\OT1/ptm/m/n/10 Ten-sor-Board/json logs, en-abling Fig-ures 1[]--3[];
+ []
+
+
+Underfull \hbox (badness 7722) in paragraph at lines 214--215
+\OT1/ptm/m/n/10 for MDN/autoregressive we rely on check-points,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 214--215
+\OT1/pcr/m/n/10 analysis/eval_baseline_loss.py\OT1/ptm/m/n/10 , and
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 214--215
+\OT1/pcr/m/n/10 analysis/compare_distributions.py \OT1/ptm/m/n/10 to
+ []
+
+
+
+[4 <./figures/combined_losses.png> <./figures/pca_means_samples_targets.png> <.
+/figures/combined_knn.png> <./figures/mdn_samples_hex.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+[]\OT1/ptm/b/n/10 Reproduction. \OT1/ptm/m/n/10 Re-gen-er-ate Fig-ures 1[]--
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+\OT1/ptm/m/n/10 7[] via \OT1/pcr/m/n/10 analysis/plot_losses.py\OT1/ptm/m/n/10 
+,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+\OT1/pcr/m/n/10 analysis/plot_knn.py\OT1/ptm/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+\OT1/pcr/m/n/10 analysis/compute_knn.py\OT1/ptm/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+\OT1/pcr/m/n/10 analysis/compare_distributions.py\OT1/ptm/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+\OT1/pcr/m/n/10 MDN/visualize_mdn.py\OT1/ptm/m/n/10 , and
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+\OT1/pcr/m/n/10 analysis/mask_overlay.py\OT1/ptm/m/n/10 . All scripts
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+\OT1/ptm/m/n/10 read check-points/logs di-rectly and write into
+ []
+
+
+
+(./report.bbl
+
+[5 <./figures/mdn_distribution_3d.png> <./figures/mask_overlay.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+
+Underfull \vbox (badness 7256) has occurred while \output is active []
+
+
+
+[6 <./figures/distribution_comparison.png>])
+
+** Conference Paper **
+Before submitting the final camera ready copy, remember to:
+
+ 1. Manually equalize the lengths of two columns on the last page
+ of your paper;
+
+ 2. Ensure that any PostScript and/or PDF output post-processing
+ uses only Type 1 fonts and that every step in the generation
+ process uses the appropriate paper size.
+
+
+
+
+
+[7
+
+] (./report.aux)
+ ***********
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+ ***********
+ ) 
+Here is how much of TeX's memory you used:
+ 4367 strings out of 473190
+ 71079 string characters out of 5704335
+ 483166 words of memory out of 5000000
+ 27567 multiletter control sequences out of 15000+600000
+ 598300 words of font info for 113 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 57i,12n,65p,1417b,325s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/homebrew/Cellar/texlive/202503
+08_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></opt/homebrew/C
+ellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.
+pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/homebrew/Cellar/texlive/202503
+08_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></opt/homebrew/Ce
+llar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pf
+b></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy6.pfb></opt/homebrew/Cellar/texlive/202503
+08_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/homebrew/C
+ellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.
+pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/c
+ourier/ucrr8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fon
+ts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/te
+xmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/202503
+08_1/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/te
+xlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on report.pdf (7 pages, 1999084 bytes).
+PDF statistics:
+ 129 PDF objects out of 1000 (max. 8388607)
+ 71 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+

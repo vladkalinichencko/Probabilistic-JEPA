@@ -9,3 +9,11 @@ visualizations/
 data/
 runs/
 mlruns/
+
+# Large model artifacts
+*.pt
+*.pth
+MDN/mdn_last.pt
+autoregression/predictor_model.pth
+autoregression/student_model.pth
+autoregression/teacher_model.pth
