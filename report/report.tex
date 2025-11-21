@@ -9,6 +9,11 @@
 \usepackage{url}
 \usepackage{booktabs}
 \usepackage{array}
+% Map uncommon Unicode characters from bibliography to ASCII-safe forms
+\DeclareUnicodeCharacter{00D7}{\texttimes}
+\DeclareUnicodeCharacter{3010}{[}
+\DeclareUnicodeCharacter{3011}{]}
+\DeclareUnicodeCharacter{2020}{\textsuperscript{\textdagger}}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -50,13 +55,13 @@ This report summarizes the design and results of four predictors trained on Tiny
 
 \section{Related Work}
 \textbf{Joint-embedding SSL.}
-I-JEPA~\cite{assran2023jepa} anchors the teacher--student/EMA design from BYOL and MoCo~\cite{grill2020byol,chen2020moco,he2020momentum} but moves prediction to latent space: masking removes target tokens from the student, positional encodings are added to learned queries, and the predictor regresses to teacher targets.
+I-JEPA~\cite{assran2023jepa} anchors the teacher--student/EMA design from BYOL and MoCo~\cite{grill2020byol,chen2020moco,chen2020momentum} but moves prediction to latent space: masking removes target tokens from the student, positional encodings are added to learned queries, and the predictor regresses to teacher targets.
 Because it forgoes contrastive negatives and pixel reconstruction, I-JEPA produces representations with strong invariances while remaining simpler to optimize than pixel-aware masked autoencoders (MAE)~\cite{he2022mae}.
 Our work keeps this architecture intact and experiments with alternative predictors that can be sampled, effectively turning JEPAs into conditional density estimators over teacher latents.
 Throughout this section we distinguish predictors that yield an explicit parametric distribution in a single forward pass (MDNs and flows) from those that define a distribution implicitly through a stochastic sampling procedure (autoregressive and diffusion heads).
 
 \textbf{Autoregressive density estimators.}
-Real-valued neural autoregressive density-estimator (MADE/RNADE)~\cite{germain2015made,uria2014rnade} factorize a joint density into a product of one-dimensional conditionals, typically ordered along vector coordinates or pixels.
+Real-valued neural autoregressive density-estimator (MADE/RNADE)~\cite{germain2015made,uria2013rnade} factorize a joint density into a product of one-dimensional conditionals, typically ordered along vector coordinates or pixels.
 Our RNADE-style head follows this recipe but conditions the masked MLP on the pooled context via FiLM layers~\cite{perez2018film}: the context embedding is mapped to per-layer scales and shifts that modulate hidden activations, so every conditional $p(z_d \mid z_{<d}, \text{context})$ is explicitly context-aware.
 This gives a normalized density over teacher embeddings while still allowing us to draw diverse samples by sampling dimensions sequentially, making the autoregressive head an example of a model where the distribution is primarily explored through explicit sampling rather than a closed-form multivariate mixture.
 
@@ -73,8 +78,8 @@ Flow matching~\cite{lipman2023flowmatching} trains such flows by supervising a v
 In our JEPA head, a stack of coupling layers conditions on context features and time embeddings; a single forward pass provides both an explicit likelihood for a teacher token and a mapping from Gaussian noise to a latent sample, so the full distribution is modeled analytically after one run rather than only through repeated sampling.
 
 \textbf{Diffusion models.}
-Denoising diffusion models~\cite{ho2020ddpm,song2020ddim} define a forward Markov chain that gradually corrupts data with Gaussian noise and train a neural network to reverse this process by predicting the noise at each step.
-We follow the DDPM noise-prediction formulation~\cite{ho2020ddpm} with DDIM-style deterministic sampling~\cite{song2020ddim}: at generation time the model is applied multiple times along a fixed noise schedule to iteratively denoise a latent from pure noise back to a plausible teacher embedding.
+Denoising diffusion models~\cite{ho2020ddpm,song2021ddim} define a forward Markov chain that gradually corrupts data with Gaussian noise and train a neural network to reverse this process by predicting the noise at each step.
+We follow the DDPM noise-prediction formulation~\cite{ho2020ddpm} with DDIM-style deterministic sampling~\cite{song2021ddim}: at generation time the model is applied multiple times along a fixed noise schedule to iteratively denoise a latent from pure noise back to a plausible teacher embedding.
 Placed after the JEPA encoder, diffusion heads treat each teacher token as ground-truth clean data and learn to reverse progressively noised latents; the resulting distribution is accessed implicitly by running the denoising process multiple times with different noise seeds, making diffusion the most sampling-intensive of our predictors but also the one that empirically covers modes most thoroughly.
 
 \section{Methodology}
@@ -86,7 +91,7 @@ Because multiple completions are plausible, deterministic predictors can collaps
 In every variant, training alternates: (1) sample context/target masks, (2) teacher encodes the full image, (3) student encodes context only, (4) predictor outputs a distribution for each target token, (5) loss is applied in latent space, (6) EMA updates the teacher.
 
 \subsection{Backbone and Masking}
-We closely follow the method from the original I-JEPA paper. All variants share the same ViT encoder~\cite{dosovitskiy2020vit}: image size $64{\times}64$, patch size $8$, hidden dimension $384$, $10$ transformer layers, and $8$ heads (MDN uses identical sizes; the autoregressive variant uses $600$ hidden dim and $6$ layers to match its RNADE head).
+We closely follow the method from the original I-JEPA paper. All variants share the same ViT encoder~\cite{dosovitskiy2021vit}: image size $64{\times}64$, patch size $8$, hidden dimension $384$, $10$ transformer layers, and $8$ heads (MDN uses identical sizes; the autoregressive variant uses $600$ hidden dim and $6$ layers to match its RNADE head).
 For each image, a large context block is sampled, and four target blocks are selected with area $\in[0.15,0.20]$ and aspect ratio $\in[0.75,1.50]$; at least $8$ context patches are enforced.
 The student encodes only visible context, while the EMA teacher encodes full images.
 Target positional encodings are added to learned query tokens for each masked patch.
@@ -98,10 +103,10 @@ Training augmentations: random resized crop to $64{\times}64$ and horizontal fli
 The random-resized-crop augmentation first samples a sub-rectangle covering $80$--$100\%$ of the original area (with slight aspect-ratio jitter), then rescales that patch back to $64{\times}64$, effectively implementing random zoom-and-translate.
 
 \subsection{Training Hyperparameters}
-All runs use AdamW~\cite{loshchilov2018adamw} with gradient clipping ($\|g\|\_2\le3$).
+All runs use AdamW~\cite{loshchilov2019adamw} with gradient clipping ($\|g\|\_2\le3$).
 EMA momentum follows a cosine schedule from $0.998$ to $1.0$.
 Flow and diffusion heads train with batch size $600$ and base LR $5\!\times\!10^{-5}$; MDN uses batch $360$ and LR $3\!\times\!10^{-4}$; the autoregressive head uses batch $128$ and LR $1\!\times\!10^{-4}$.
-Diffusion inference uses $50$ DDIM-like steps~\cite{song2020ddim}; flows clamp coupling scales to $\pm 2$ for stability.
+Diffusion inference uses $50$ DDIM-like steps~\cite{song2021ddim}; flows clamp coupling scales to $\pm 2$ for stability.
 
 \section{Predictor Case Studies}
 We separate the qualitative and quantitative discussion by predictor to make the report approachable to re-implement each variant.  Every subsection summarizes the motivation, implementation strategy, and the concrete evaluation numbers.
@@ -170,14 +175,14 @@ where $c_i$ is the context embedding for target $i$ and $p_\theta$ is computed v
 \end{figure}
 
 \subsection{Diffusion over Embeddings}
-Our diffusion variant treats each teacher token as a ``clean'' latent and trains a U-Net-like head to denoise embeddings corrupted by a linear beta schedule.  Sinusoidal timestep embeddings are injected into residual attention blocks to encode the noise level, and context summaries FiLM the intermediate features with per-layer scales and shifts.  Training mirrors the flow setup (batch 600, AdamW $5\!\times\!10^{-5}$) but optimizes a DDPM noise-prediction loss.  At inference time we use DDIM-style sampling~\cite{song2020ddim} with 50 steps, and a 25-step variant that retains most of the accuracy while halving latency.  Diffusion achieves the best Tiny ImageNet-100 performance with $22.36\%$ validation kNN@1 (Table~\ref{tab:results}), and its latent samples cover the teacher distribution more uniformly than the other heads.
+Our diffusion variant treats each teacher token as a ``clean'' latent and trains a U-Net-like head to denoise embeddings corrupted by a linear beta schedule.  Sinusoidal timestep embeddings are injected into residual attention blocks to encode the noise level, and context summaries FiLM the intermediate features with per-layer scales and shifts.  Training mirrors the flow setup (batch 600, AdamW $5\!\times\!10^{-5}$) but optimizes a DDPM noise-prediction loss.  At inference time we use DDIM-style sampling~\cite{song2021ddim} with 50 steps, and a 25-step variant that retains most of the accuracy while halving latency.  Diffusion achieves the best Tiny ImageNet-100 performance with $22.36\%$ validation kNN@1 (Table~\ref{tab:results}), and its latent samples cover the teacher distribution more uniformly than the other heads.
 \begin{equation}
     \mathcal{L}_{\mathrm{diff}}
     = \mathbb{E}_{t,i,\epsilon_i}\bigl[
         \|\epsilon_i - \epsilon_\theta(x_{i,t}, t, c_i)\|_2^2
     \bigr],
 \end{equation}
-where $z_i$ is the clean teacher token, $x_{i,t}$ is its noised version at step $t$, $\epsilon_i$ is the injected Gaussian noise, and $c_i$ is the context embedding.  At inference time we use DDIM-style sampling~\cite{song2020ddim} with 50 steps, and a 25-step variant that retains most of the accuracy while halving latency.  Diffusion achieves the best Tiny ImageNet-100 performance with $22.36\%$ validation kNN@1 (Table~\ref{tab:results}), and its latent samples cover the teacher distribution more uniformly than the other heads.
+where $z_i$ is the clean teacher token, $x_{i,t}$ is its noised version at step $t$, $\epsilon_i$ is the injected Gaussian noise, and $c_i$ is the context embedding.  At inference time we use DDIM-style sampling~\cite{song2021ddim} with 50 steps, and a 25-step variant that retains most of the accuracy while halving latency.  Diffusion achieves the best Tiny ImageNet-100 performance with $22.36\%$ validation kNN@1 (Table~\ref{tab:results}), and its latent samples cover the teacher distribution more uniformly than the other heads.
 
 \begin{figure}[t]
     \centering

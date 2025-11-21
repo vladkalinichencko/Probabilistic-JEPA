@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex report"] 1763754166.88844 "report.aux" "report.bbl" "report" 1763754169.01378 0
-  "./references.bib" 1763734296.83107 5994 424fe31f0c1229d35856fbcd8e26e480 ""
+["bibtex report"] 1763758510.08931 "report.aux" "report.bbl" "report" 1763758527.66789 0
+  "./references.bib" 1763758169.89265 7118 ad68eec06ba03a92981e3199a09c9ece ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1741388039 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "report.aux" 1763754168.82344 6155 cc9abd8317973b600b220d025d22f693 "pdflatex"
+  "report.aux" 1763758527.49927 6159 9e4b30012ec1a88d1111f84fefab7610 "pdflatex"
   (generated)
   "report.bbl"
   "report.blg"
   (rewritten before read)
-["pdflatex"] 1763754166.98808 "/Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex" "report.pdf" "report" 1763754169.01391 0
-  "/Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex" 1763753951.58183 27826 e6353c749859c66a40de913e920b6d60 ""
+["pdflatex"] 1763758525.78954 "/Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex" "report.pdf" "report" 1763758527.66803 0
+  "/Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex" 1763758505.50015 28073 7833380f06b0dca7beb2820e47fc5341 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1741388039 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/fontname/texfonts.map" 1741388039 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/pdftex/updmap/pdftex.map" 1741388039 5466553 2748998d7db8078826afa1f272036265 ""
@@ -19,6 +19,7 @@
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/tfm/adobe/times/ptmbi7t.tfm" 1741388039 2228 e564491c42a4540b5ebb710a75ff306c ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/tfm/adobe/times/ptmbi8r.tfm" 1741388039 4480 10409ed8bab5aea9ec9a78028b763919 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm" 1741388039 2124 2601a75482e9426d33db523edf23570a ""
+  "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/tfm/adobe/times/ptmr8c.tfm" 1741388039 1352 fa28a7e6d323c65ce7d13d5342ff6be2 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm" 1741388039 4408 25b74d011a4c66b7f212c0cc3c90061b ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/tfm/adobe/times/ptmrc7t.tfm" 1741388039 2680 312a2d12b1f1df8ee0212e7ba1962402 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/tfm/adobe/times/ptmri7t.tfm" 1741388039 2288 f478fc8fed18759effb59f3dad7f3084 ""
@@ -59,6 +60,7 @@
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf" 1741388039 1372 788387fea833ef5963f4c5bffe33eb89 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/vf/adobe/times/ptmbi7t.vf" 1741388039 1384 6ac0f8b839230f5d9389287365b243c0 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf" 1741388039 1380 0ea3a3370054be6da6acd929ec569f06 ""
+  "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/vf/adobe/times/ptmr8c.vf" 1741388039 3556 8a9a6dcbcd146ef985683f677f4758a6 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/vf/adobe/times/ptmrc7t.vf" 1741388039 1948 7330aeef3af211edff3b35fb2c12a0fd ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/vf/adobe/times/ptmri7t.vf" 1741388039 1384 a9d8adaf491ce34e5fba99dc7bbe5f39 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1741388039 71627 94eb9990bed73c364d7f53f960cc8c5b ""
@@ -89,6 +91,7 @@
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/omsptm.fd" 1741388039 576 95c2c0baea9c719a4be29a3d4122498b ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd" 1741388039 985 1ed784d7bfe47179f3550d2303b073f8 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd" 1741388039 961 15056f4a61917ceed3a44e4ac11fcc52 ""
+  "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/ts1ptm.fd" 1741388039 619 96f56dc5d1ef1fe1121f1cfeec70ee0c ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/tools/array.sty" 1741388039 14552 27664839421e418b87f56fa4c6f66b1a ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/url/url.sty" 1741388039 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/xcolor/xcolor.sty" 1741388039 55384 b454dec21c2d9f45ec0b793f0995b992 ""
@@ -114,9 +117,9 @@
   "figures/mdn_knn.png" 1763753778.76443 70039 bae71df39d4948917502ff21a080f919 ""
   "figures/mdn_loss.png" 1763753778.76038 125649 728d01dfe093f860ce6ce1b71445a20f ""
   "figures/mdn_scheme.jpeg" 1763738894.04727 2337527 155349a84573c925caece30b7523e1ae ""
-  "report.aux" 1763754168.82344 6155 cc9abd8317973b600b220d025d22f693 "pdflatex"
-  "report.bbl" 1763754166.98605 6453 953869e1e05a82d11125ec2321dffefd "bibtex report"
-  "report.tex" 1763753951.58183 27826 e6353c749859c66a40de913e920b6d60 ""
+  "report.aux" 1763758527.49927 6159 9e4b30012ec1a88d1111f84fefab7610 "pdflatex"
+  "report.bbl" 1763758510.19013 6899 f1011791495b62570859454ef292a6a0 "bibtex report"
+  "report.tex" 1763758505.50015 28073 7833380f06b0dca7beb2820e47fc5341 ""
   (generated)
   "report.aux"
   "report.log"
