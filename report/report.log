@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.3.15)  20 NOV 2025 22:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.3.15)  21 NOV 2025 22:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -297,246 +297,177 @@ File: omsptm.fd
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 26.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 50.
- (/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 60.
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 50.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 60.
  (/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-
-
 
 [1{/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}{/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 83.
- (/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 95.
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 
+[2]
+<figures/i-jepa_scheme.jpeg, id=21, 2762.32pt x 1397.22pt>
+File: figures/i-jepa_scheme.jpeg Graphic file (type jpg)
+<use figures/i-jepa_scheme.jpeg>
+Package pdftex.def Info: figures/i-jepa_scheme.jpeg  used on input line 118.
+(pdftex.def)             Requested size: 242.52063pt x 122.653pt.
+<figures/mdn_scheme.jpeg, id=22, 2762.32pt x 1541.76pt>
+File: figures/mdn_scheme.jpeg Graphic file (type jpg)
+<use figures/mdn_scheme.jpeg>
+Package pdftex.def Info: figures/mdn_scheme.jpeg  used on input line 135.
+(pdftex.def)             Requested size: 242.52063pt x 135.34123pt.
 
-Underfull \hbox (badness 3148) in paragraph at lines 103--104
+Underfull \hbox (badness 3148) in paragraph at lines 141--142
 \OT1/ptm/m/n/10 em-bed-dings and fac-tor-izes the joint den-sity into one-
  []
 
 
 
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 113--118
-[]\OT1/ptm/m/n/10 Repository: $\OMS/cmsy/m/n/10 h\OT1/ptm/m/n/10 insertGitHubURL[]$ (re-place with the
+
+Underfull \hbox (badness 5954) in paragraph at lines 147--149
+\OT1/ptm/m/n/10 Here $\OML/cmm/m/it/10 z[]$ \OT1/ptm/m/n/10 is co-or-di-nate $\OML/cmm/m/it/10 d$ \OT1/ptm/m/n/10 of teacher to-ken $\OML/cmm/m/it/10 i$\OT1/ptm/m/n/10 , and
+ []
+
+<figures/autoregression_scheme.jpeg, id=23, 2762.32pt x 1541.76pt>
+File: figures/autoregression_scheme.jpeg Graphic file (type jpg)
+<use figures/autoregression_scheme.jpeg>
+Package pdftex.def Info: figures/autoregression_scheme.jpeg  used on input line 152.
+(pdftex.def)             Requested size: 242.52063pt x 135.34123pt.
+
+
+[3 <./figures/i-jepa_scheme.jpeg> <./figures/mdn_scheme.jpeg> <./figures/autoregression_scheme.jpeg>]
+<figures/flow_matching_scheme.jpeg, id=27, 2762.32pt x 1541.76pt>
+File: figures/flow_matching_scheme.jpeg Graphic file (type jpg)
+<use figures/flow_matching_scheme.jpeg>
+Package pdftex.def Info: figures/flow_matching_scheme.jpeg  used on input line 167.
+(pdftex.def)             Requested size: 242.52063pt x 135.34123pt.
+<figures/diffusion_scheme.jpeg, id=28, 1381.16pt x 770.88pt>
+File: figures/diffusion_scheme.jpeg Graphic file (type jpg)
+<use figures/diffusion_scheme.jpeg>
+Package pdftex.def Info: figures/diffusion_scheme.jpeg  used on input line 184.
+(pdftex.def)             Requested size: 242.52063pt x 135.353pt.
+
+
+<figures/i-jepa_distribution.png, id=29, 433.62pt x 361.35pt>
+File: figures/i-jepa_distribution.png Graphic file (type png)
+<use figures/i-jepa_distribution.png>
+Package pdftex.def Info: figures/i-jepa_distribution.png  used on input line 227.
+(pdftex.def)             Requested size: 92.87622pt x 77.3965pt.
+<figures/mdn_distribution.png, id=31, 433.62pt x 361.35pt>
+File: figures/mdn_distribution.png Graphic file (type png)
+<use figures/mdn_distribution.png>
+Package pdftex.def Info: figures/mdn_distribution.png  used on input line 231.
+(pdftex.def)             Requested size: 92.87622pt x 77.3965pt.
+<figures/autoregression_distribution.png, id=32, 433.62pt x 361.35pt>
+File: figures/autoregression_distribution.png Graphic file (type png)
+<use figures/autoregression_distribution.png>
+Package pdftex.def Info: figures/autoregression_distribution.png  used on input line 235.
+(pdftex.def)             Requested size: 92.87622pt x 77.3965pt.
+<figures/flow_matching_distribution.png, id=33, 562.1pt x 421.575pt>
+File: figures/flow_matching_distribution.png Graphic file (type png)
+<use figures/flow_matching_distribution.png>
+Package pdftex.def Info: figures/flow_matching_distribution.png  used on input line 239.
+(pdftex.def)             Requested size: 92.87622pt x 69.65335pt.
+<figures/diffusion_distribution.png, id=34, 433.62pt x 361.35pt>
+File: figures/diffusion_distribution.png Graphic file (type png)
+<use figures/diffusion_distribution.png>
+Package pdftex.def Info: figures/diffusion_distribution.png  used on input line 243.
+(pdftex.def)             Requested size: 92.87622pt x 77.3965pt.
+
+Overfull \hbox (68.38126pt too wide) in paragraph at lines 225--247
+ [][] 
+ []
+
+<figures/i-jepa_loss.png, id=35, 841.1425pt x 425.59pt>
+File: figures/i-jepa_loss.png Graphic file (type png)
+<use figures/i-jepa_loss.png>
+Package pdftex.def Info: figures/i-jepa_loss.png  used on input line 255.
+(pdftex.def)             Requested size: 92.87622pt x 46.99037pt.
+<figures/mdn_loss.png, id=36, 841.1425pt x 425.59pt>
+File: figures/mdn_loss.png Graphic file (type png)
+<use figures/mdn_loss.png>
+Package pdftex.def Info: figures/mdn_loss.png  used on input line 259.
+(pdftex.def)             Requested size: 92.87622pt x 46.99037pt.
+<figures/autoregression_loss.png, id=37, 841.1425pt x 425.59pt>
+File: figures/autoregression_loss.png Graphic file (type png)
+<use figures/autoregression_loss.png>
+Package pdftex.def Info: figures/autoregression_loss.png  used on input line 263.
+(pdftex.def)             Requested size: 92.87622pt x 46.99037pt.
+<figures/flow_matching_loss.jpg, id=38, 728.7225pt x 314.17375pt>
+File: figures/flow_matching_loss.jpg Graphic file (type jpg)
+<use figures/flow_matching_loss.jpg>
+Package pdftex.def Info: figures/flow_matching_loss.jpg  used on input line 267.
+(pdftex.def)             Requested size: 92.87622pt x 40.03864pt.
+<figures/diffusion_loss.png, id=39, 346.896pt x 231.264pt>
+File: figures/diffusion_loss.png Graphic file (type png)
+<use figures/diffusion_loss.png>
+Package pdftex.def Info: figures/diffusion_loss.png  used on input line 271.
+(pdftex.def)             Requested size: 92.87622pt x 61.91632pt.
+
+Overfull \hbox (68.38126pt too wide) in paragraph at lines 253--275
+ [][] 
+ []
+
+<figures/i-jepa_knn.png, id=40, 656.4525pt x 315.1775pt>
+File: figures/i-jepa_knn.png Graphic file (type png)
+<use figures/i-jepa_knn.png>
+Package pdftex.def Info: figures/i-jepa_knn.png  used on input line 283.
+(pdftex.def)             Requested size: 92.87622pt x 44.59103pt.
+<figures/mdn_knn.png, id=41, 656.4525pt x 315.1775pt>
+File: figures/mdn_knn.png Graphic file (type png)
+<use figures/mdn_knn.png>
+Package pdftex.def Info: figures/mdn_knn.png  used on input line 287.
+(pdftex.def)             Requested size: 92.87622pt x 44.59103pt.
+<figures/autoregression_knn.png, id=42, 656.4525pt x 315.1775pt>
+File: figures/autoregression_knn.png Graphic file (type png)
+<use figures/autoregression_knn.png>
+Package pdftex.def Info: figures/autoregression_knn.png  used on input line 291.
+(pdftex.def)             Requested size: 92.87622pt x 44.59103pt.
+<figures/flow_matching_knn.jpg, id=43, 726.715pt x 315.1775pt>
+File: figures/flow_matching_knn.jpg Graphic file (type jpg)
+<use figures/flow_matching_knn.jpg>
+Package pdftex.def Info: figures/flow_matching_knn.jpg  used on input line 295.
+(pdftex.def)             Requested size: 92.87622pt x 40.27718pt.
+<figures/diffusion_knn.png, id=44, 346.896pt x 231.264pt>
+File: figures/diffusion_knn.png Graphic file (type png)
+<use figures/diffusion_knn.png>
+Package pdftex.def Info: figures/diffusion_knn.png  used on input line 299.
+(pdftex.def)             Requested size: 92.87622pt x 61.91632pt.
+
+Overfull \hbox (68.38126pt too wide) in paragraph at lines 281--303
+ [][] 
  []
 
 
-Underfull \hbox (badness 6825) in paragraph at lines 113--118
-\OT1/ptm/m/n/10 pub-lic link be-fore sub-mis-sion). Fold-ers map 1:1 to
- []
-
-
-Underfull \hbox (badness 4699) in paragraph at lines 113--118
-\OT1/ptm/m/n/10 pre-dic-tor vari-ants (\OT1/pcr/m/n/10 I-JEPA\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 MDN\OT1/ptm/m/n/10 , \OT1/pcr/m/n/10 autoregression\OT1/ptm/m/n/10 ,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 113--118
-\OT1/ptm/m/n/10 and \OT1/pcr/m/n/10 diffusion/scalars (2).json\OT1/ptm/m/n/10 , and the
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 113--118
-\OT1/ptm/m/n/10 de-ter-min-is-tic base-line check-point is ver-sioned in
- []
-
-
-Overfull \hbox (14.5pt too wide) in paragraph at lines 113--118
-\OT1/pcr/m/n/10 BionicEye/representation/current/checkpoints\OT1/ptm/m/n/10 .
- []
-
-
-Underfull \hbox (badness 3417) in paragraph at lines 113--118
-\OT1/ptm/m/n/10 The \OT1/pcr/m/n/10 analysis/ \OT1/ptm/m/n/10 folder cen-tral-izes eval-u-a-tion util-i-ties:
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 113--118
-\OT1/pcr/m/n/10 plot_losses.py \OT1/ptm/m/n/10 (Fig-ure 1[]), \OT1/pcr/m/n/10 plot_knn.py
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 113--118
-\OT1/ptm/m/n/10 (Fig-ure 3[]), \OT1/pcr/m/n/10 compute_knn.py \OT1/ptm/m/n/10 (Ta-ble I[]),
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 113--118
-\OT1/pcr/m/n/10 eval_baseline_loss.py \OT1/ptm/m/n/10 (base-line sweep), and
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 113--118
-\OT1/pcr/m/n/10 compare_distributions.py \OT1/ptm/m/n/10 (Fig-ure 7[]). MDN-
- []
-
-
-Underfull \hbox (badness 3735) in paragraph at lines 113--118
-\OT1/ptm/m/n/10 specific di-ag-nos-tics live in \OT1/pcr/m/n/10 MDN/visualize_mdn.py
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 113--118
-\OT1/ptm/m/n/10 and \OT1/pcr/m/n/10 analysis/mdn_distribution_3d.py\OT1/ptm/m/n/10 ,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 113--118
-\OT1/ptm/m/n/10 and the mask-ing il-lus-tra-tion is re-gen-er-ated via
- []
-
-
-Underfull \hbox (badness 4108) in paragraph at lines 121--127
-\OT1/ptm/m/n/10 mal-izes them, and per-forms chun-ked co-sine kNN so
- []
+Underfull \vbox (badness 3428) has occurred while \output is active []
 
 
 
-<figures/combined_losses.png, id=20, 975.645pt x 289.08pt>
-File: figures/combined_losses.png Graphic file (type png)
-<use figures/combined_losses.png>
-Package pdftex.def Info: figures/combined_losses.png  used on input line 155.
-(pdftex.def)             Requested size: 242.52063pt x 71.85518pt.
-<figures/pca_means_samples_targets.png, id=22, 505.89pt x 505.89pt>
-File: figures/pca_means_samples_targets.png Graphic file (type png)
-<use figures/pca_means_samples_targets.png>
-Package pdftex.def Info: figures/pca_means_samples_targets.png  used on input line 162.
-(pdftex.def)             Requested size: 242.52063pt x 242.52338pt.
-<figures/combined_knn.png, id=23, 469.755pt x 303.534pt>
-File: figures/combined_knn.png Graphic file (type png)
-<use figures/combined_knn.png>
-Package pdftex.def Info: figures/combined_knn.png  used on input line 169.
-(pdftex.def)             Requested size: 242.52063pt x 156.70384pt.
-<figures/mdn_samples_hex.png, id=24, 433.62pt x 361.35pt>
-File: figures/mdn_samples_hex.png Graphic file (type png)
-<use figures/mdn_samples_hex.png>
-Package pdftex.def Info: figures/mdn_samples_hex.png  used on input line 176.
-(pdftex.def)             Requested size: 242.52063pt x 202.10098pt.
-<figures/mdn_distribution_3d.png, id=25, 433.62pt x 361.35pt>
-File: figures/mdn_distribution_3d.png Graphic file (type png)
-<use figures/mdn_distribution_3d.png>
-Package pdftex.def Info: figures/mdn_distribution_3d.png  used on input line 183.
-(pdftex.def)             Requested size: 242.52063pt x 202.10098pt.
-<figures/mask_overlay.png, id=26, 289.08pt x 289.08pt>
-File: figures/mask_overlay.png Graphic file (type png)
-<use figures/mask_overlay.png>
-Package pdftex.def Info: figures/mask_overlay.png  used on input line 190.
-(pdftex.def)             Requested size: 242.52063pt x 242.52118pt.
-<figures/distribution_comparison.png, id=27, 867.24pt x 867.24pt>
-File: figures/distribution_comparison.png Graphic file (type png)
-<use figures/distribution_comparison.png>
-Package pdftex.def Info: figures/distribution_comparison.png  used on input line 197.
-(pdftex.def)             Requested size: 474.71906pt x 474.72064pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 202--204
-\OML/cmm/m/it/10 ^^[$ \OT1/ptm/m/n/10 his-tograms) re-side in \OT1/pcr/m/n/10 figures/entropy.png\OT1/ptm/m/n/10 ,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 202--204
-\OT1/pcr/m/n/10 figures/mixture_weights.png\OT1/ptm/m/n/10 , and
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 202--204
-\OT1/pcr/m/n/10 figures/sigma_distribution.png\OT1/ptm/m/n/10 ; Fig-ure 5[]
- []
-
-
-
-[3]
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 214--215
-[]\OT1/ptm/b/n/10 Log cov-er-age. \OT1/ptm/m/n/10 Flow/diffusion have com-plete
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 214--215
-\OT1/ptm/m/n/10 Ten-sor-Board/json logs, en-abling Fig-ures 1[]--3[];
- []
-
-
-Underfull \hbox (badness 7722) in paragraph at lines 214--215
-\OT1/ptm/m/n/10 for MDN/autoregressive we rely on check-points,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 214--215
-\OT1/pcr/m/n/10 analysis/eval_baseline_loss.py\OT1/ptm/m/n/10 , and
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 214--215
-\OT1/pcr/m/n/10 analysis/compare_distributions.py \OT1/ptm/m/n/10 to
+[4 <./figures/flow_matching_scheme.jpeg> <./figures/diffusion_scheme.jpeg>]
+Underfull \hbox (badness 5607) in paragraph at lines 311--312
+[]\OT1/ptm/b/n/10 Diffusion qual-ity. \OT1/ptm/m/n/10 Dif-fu-sion achieves the high-est
  []
 
 
 
-[4 <./figures/combined_losses.png> <./figures/pca_means_samples_targets.png> <./figures/combined_knn.png> <./figures/mdn_samples_hex.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 215--216
-[]\OT1/ptm/b/n/10 Reproduction. \OT1/ptm/m/n/10 Re-gen-er-ate Fig-ures 1[]--
- []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 215--216
-\OT1/ptm/m/n/10 7[] via \OT1/pcr/m/n/10 analysis/plot_losses.py\OT1/ptm/m/n/10 ,
- []
+[5 <./figures/i-jepa_distribution.png> <./figures/mdn_distribution.png> <./figures/autoregression_distribution.png> <./figures/flow_matching_distribution.png> <./figures/diffusion_distribution.png> <./figures/i-jepa_loss.png> <./figures/mdn_loss.png> <./figures/autoregression_loss.png> <./figures/flow_matching_loss.jpg> <./figures/diffusion_loss.png> <./figures/i-jepa_knn.png> <./figures/mdn_knn.png> <./figures/autoregression_knn.png> <./figures/flow_matching_knn.jpg> <./figures/diffusion_knn.png>] (./report.bbl
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 215--216
-\OT1/pcr/m/n/10 analysis/plot_knn.py\OT1/ptm/m/n/10 ,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 215--216
-\OT1/pcr/m/n/10 analysis/compute_knn.py\OT1/ptm/m/n/10 ,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 215--216
-\OT1/pcr/m/n/10 analysis/compare_distributions.py\OT1/ptm/m/n/10 ,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 215--216
-\OT1/pcr/m/n/10 MDN/visualize_mdn.py\OT1/ptm/m/n/10 , and
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 215--216
-\OT1/pcr/m/n/10 analysis/mask_overlay.py\OT1/ptm/m/n/10 . All scripts
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 215--216
-\OT1/ptm/m/n/10 read check-points/logs di-rectly and write into
- []
-
-
-
-(./report.bbl
-
-[5 <./figures/mdn_distribution_3d.png> <./figures/mask_overlay.png>]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-
-Underfull \vbox (badness 7256) has occurred while \output is active []
-
-
-
-[6 <./figures/distribution_comparison.png>])
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -550,29 +481,25 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-
-
-[7
-
-] (./report.aux)
+[6] (./report.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4368 strings out of 473190
- 71287 string characters out of 5704335
- 483152 words of memory out of 5000000
- 27567 multiletter control sequences out of 15000+600000
- 598300 words of font info for 113 fonts, out of 8000000 for 9000
+ 4460 strings out of 473190
+ 74524 string characters out of 5704335
+ 480244 words of memory out of 5000000
+ 27661 multiletter control sequences out of 15000+600000
+ 598563 words of font info for 111 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,12n,65p,1487b,325s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report.pdf (7 pages, 1999109 bytes).
+ 57i,18n,65p,935b,368s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on report.pdf (6 pages, 10894910 bytes).
 PDF statistics:
- 129 PDF objects out of 1000 (max. 8388607)
- 71 compressed objects within 1 object stream
+ 150 PDF objects out of 1000 (max. 8388607)
+ 70 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 101 words of extra memory for PDF output out of 10000 (max. 10000000)
 

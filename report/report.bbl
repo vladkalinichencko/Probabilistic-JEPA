@@ -35,19 +35,14 @@ J.-B. Grill, F.~Strub, F.~Altch{\'e}, C.~Tallec, P.~Richemond, E.~Buchatskaya, C
 T.~Chen, S.~Kornblith, M.~Norouzi, and G.~Hinton, ``Momentum contrast for unsupervised visual representation learning,'' \emph{IEEE/CVF Conference on Computer Vision and Pattern Recognition}, 2020. [Online]. Available: \url{https://arxiv.org/abs/1911.05722}
 \BIBentrySTDinterwordspacing
 
-\bibitem{dosovitskiy2020vit}
-\BIBentryALTinterwordspacing
-A.~Dosovitskiy, L.~Beyer, A.~Kolesnikov, D.~Weissenborn, X.~Zhai, T.~Unterthiner, M.~Dehghani, M.~Minderer, G.~Heigold, S.~Gelly, J.~Uszkoreit, and N.~Houlsby, ``An image is worth 16x16 words: Transformers for image recognition at scale,'' \emph{International Conference on Learning Representations}, 2021. [Online]. Available: \url{https://arxiv.org/abs/2010.11929}
-\BIBentrySTDinterwordspacing
-
 \bibitem{he2020momentum}
 \BIBentryALTinterwordspacing
 X.~Chen, H.~Fan, R.~Girshick, and K.~He, ``Momentum contrast v2 for unsupervised visual representation learning,'' \emph{arXiv preprint arXiv:2003.04297}, 2020. [Online]. Available: \url{https://arxiv.org/abs/2003.04297}
 \BIBentrySTDinterwordspacing
 
-\bibitem{bishop1994mdn}
+\bibitem{he2022mae}
 \BIBentryALTinterwordspacing
-C.~M. Bishop, ``Mixture density networks,'' Neural Computing Research Group, Tech. Rep. NCRG/94/004, 1994. [Online]. Available: \url{https://www.microsoft.com/en-us/research/publication/mixture-density-networks/}
+K.~He, X.~Chen, S.~Xie, Y.~Li, P.~Doll{\'a}r, and R.~Girshick, ``Masked autoencoders are scalable vision learners,'' \emph{IEEE/CVF Conference on Computer Vision and Pattern Recognition}, 2022. [Online]. Available: \url{https://arxiv.org/abs/2111.06377}
 \BIBentrySTDinterwordspacing
 
 \bibitem{germain2015made}
@@ -58,6 +53,16 @@ M.~Germain, K.~Gregor, I.~Murray, and H.~Larochelle, ``Made: Masked autoencoder 
 \bibitem{uria2014rnade}
 \BIBentryALTinterwordspacing
 B.~Uria, I.~Murray, and H.~Larochelle, ``Rnade: The real-valued neural autoregressive density estimator,'' \emph{Advances in Neural Information Processing Systems}, 2014. [Online]. Available: \url{https://arxiv.org/abs/1306.0186}
+\BIBentrySTDinterwordspacing
+
+\bibitem{perez2018film}
+\BIBentryALTinterwordspacing
+E.~Perez, F.~Strub, H.~De~Vries, V.~Dumoulin, and A.~Courville, ``Film: Visual reasoning with a general conditioning layer,'' in \emph{AAAI Conference on Artificial Intelligence}, 2018. [Online]. Available: \url{https://arxiv.org/abs/1709.07871}
+\BIBentrySTDinterwordspacing
+
+\bibitem{bishop1994mdn}
+\BIBentryALTinterwordspacing
+C.~M. Bishop, ``Mixture density networks,'' Neural Computing Research Group, Tech. Rep. NCRG/94/004, 1994. [Online]. Available: \url{https://www.microsoft.com/en-us/research/publication/mixture-density-networks/}
 \BIBentrySTDinterwordspacing
 
 \bibitem{dinh2017realnvp}
@@ -83,6 +88,11 @@ J.~Ho, A.~Jain, and P.~Abbeel, ``Denoising diffusion probabilistic models,'' \em
 \bibitem{song2020ddim}
 \BIBentryALTinterwordspacing
 J.~Song, C.~Meng, and S.~Ermon, ``Denoising diffusion implicit models,'' \emph{International Conference on Learning Representations}, 2021. [Online]. Available: \url{https://arxiv.org/abs/2010.02502}
+\BIBentrySTDinterwordspacing
+
+\bibitem{dosovitskiy2020vit}
+\BIBentryALTinterwordspacing
+A.~Dosovitskiy, L.~Beyer, A.~Kolesnikov, D.~Weissenborn, X.~Zhai, T.~Unterthiner, M.~Dehghani, M.~Minderer, G.~Heigold, S.~Gelly, J.~Uszkoreit, and N.~Houlsby, ``An image is worth 16x16 words: Transformers for image recognition at scale,'' \emph{International Conference on Learning Representations}, 2021. [Online]. Available: \url{https://arxiv.org/abs/2010.11929}
 \BIBentrySTDinterwordspacing
 
 \bibitem{le2015tinyimagenet}

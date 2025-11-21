@@ -346,15 +346,15 @@ def main():
     base_samples, base_teacher = sample_baseline()
 
     models = [
-        ("MDN", mdn_samples, mdn_teacher),
-        ("Autoregressive", arn_samples, arn_teacher),
-        ("Deterministic", base_samples, base_teacher),
+        ("MDN", mdn_samples, mdn_teacher, FIG_DIR / "mdn_distribution.png"),
+        ("Autoregressive", arn_samples, arn_teacher, FIG_DIR / "autoregressive_distribution.png"),
+        ("Deterministic", base_samples, base_teacher, FIG_DIR / "baseline_distribution.png"),
     ]
 
+    # Combined comparison figure
     fig = plt.figure(figsize=(12, 12))
     gs = fig.add_gridspec(len(models), 2)
-
-    for idx, (name, samples, teacher) in enumerate(models):
+    for idx, (name, samples, teacher, _) in enumerate(models):
         sample_2d, teacher_2d, _ = _project(samples, teacher, dims=2)
         sample_3d, teacher_3d, _ = _project(samples, teacher, dims=3)
         ax2d = fig.add_subplot(gs[idx, 0])
@@ -362,11 +362,40 @@ def main():
         fig.colorbar(hb, ax=ax2d, fraction=0.046, pad=0.04)
         ax3d = fig.add_subplot(gs[idx, 1], projection="3d")
         _scatter_3d(ax3d, sample_3d, teacher_3d, f"{name} PCA-3D view")
-
     plt.tight_layout()
     out_path = FIG_DIR / "distribution_comparison.png"
     plt.savefig(out_path, dpi=220)
     print(f"Saved {out_path}")
+
+    # Per-model 2D histograms (for case-study sections)
+    for name, samples, teacher, path in models:
+        sample_2d, teacher_2d, _ = _project(samples, teacher, dims=2)
+        plt.figure(figsize=(6, 5))
+        hb = plt.hexbin(
+            sample_2d[:, 0],
+            sample_2d[:, 1],
+            gridsize=50,
+            cmap="magma",
+            mincnt=1,
+        )
+        plt.scatter(
+            teacher_2d[:, 0],
+            teacher_2d[:, 1],
+            c="cyan",
+            s=10,
+            alpha=0.6,
+            label="Teacher tokens",
+        )
+        plt.xlabel("PC1")
+        plt.ylabel("PC2")
+        plt.title(f"{name} latent distribution (PCA-2D hexbin)")
+        plt.grid(alpha=0.25)
+        plt.legend(loc="upper right")
+        plt.colorbar(hb, label="sample density")
+        plt.tight_layout()
+        plt.savefig(path, dpi=220)
+        plt.close()
+        print(f"Saved {path}")
 
 
 if __name__ == "__main__":

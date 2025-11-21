@@ -1,75 +1,83 @@
 \relax 
 \citation{assran2023jepa}
 \citation{grill2020byol,chen2020moco}
-\citation{dosovitskiy2020vit}
 \citation{assran2023jepa}
 \citation{grill2020byol,chen2020moco,he2020momentum}
-\citation{bishop1994mdn}
+\citation{he2022mae}
 \citation{germain2015made,uria2014rnade}
+\citation{perez2018film}
+\citation{bishop1994mdn}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{1}{}\protected@file@percent }
 \citation{dinh2017realnvp}
 \citation{kingma2018glow}
 \citation{lipman2023flowmatching}
 \citation{ho2020ddpm,song2020ddim}
+\citation{ho2020ddpm}
+\citation{song2020ddim}
 \citation{dosovitskiy2020vit}
-\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{1}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {III}Methodology}{1}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Principle of JEPA}{1}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Backbone and Masking}{1}{}\protected@file@percent }
 \citation{le2015tinyimagenet}
 \citation{loshchilov2018adamw}
 \citation{song2020ddim}
 \citation{assran2023jepa}
-\citation{lipman2023flowmatching}
+\@writefile{toc}{\contentsline {section}{\numberline {III}Methodology}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Principle of JEPA}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Backbone and Masking}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Dataset and Preprocessing}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Training Hyperparameters}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Predictor Case Studies}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Deterministic I-JEPA Baseline}{2}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Mixture Density Network (MDN)}{2}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Autoregressive RNADE Head}{2}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}RealNVP Flow Matching Head}{2}{}\protected@file@percent }
+\citation{lipman2023flowmatching}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces High-level schematic of the deterministic I-JEPA architecture. The student sees only context patches, the teacher encodes the full image, and the predictor regresses target embeddings.}}{3}{}\protected@file@percent }
+\newlabel{fig:baseline_scheme}{{1}{3}{}{figure.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Schematic of the MDN predictor head. The JEPA backbone provides context and target queries; the MDN head outputs mixture weights and Gaussian parameters for each masked token.}}{3}{}\protected@file@percent }
+\newlabel{fig:mdn_scheme}{{2}{3}{}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Mixture Density Network (MDN)}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Schematic of the autoregressive (RNADE-style) head. Context features condition a masked MLP that outputs mixture parameters coordinate-wise, implementing an autoregressive density over the embedding.}}{3}{}\protected@file@percent }
+\newlabel{fig:autoregressive_scheme}{{3}{3}{}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Autoregressive RNADE Head}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}RealNVP Flow Matching Head}{3}{}\protected@file@percent }
 \citation{song2020ddim}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Diffusion over Embeddings}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {V}GitHub Repository}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Experiments and Evaluation}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Setup}{3}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Validation kNN@1 over Tiny ImageNet-100 embeddings using a unified feature-extraction pipeline (analysis/compute\_knn.py). $^\dagger $Baseline checkpoint is the available 256-dim ViT run from \texttt  {BionicEye/representation}, so its capacity slightly differs from the 384-dim probabilistic heads.}}{3}{}\protected@file@percent }
-\newlabel{tab:results}{{I}{3}{}{table.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Results}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Visualizations}{3}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Training/validation curves extracted from logged scalars: the deterministic baseline sweep (left, per-batch validation loss), diffusion (center: train/val loss) and flow matching (right: train/val NLL) over training steps (millions).}}{4}{}\protected@file@percent }
-\newlabel{fig:losses}{{1}{4}{}{figure.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces MDN qualitative analysis: PCA of component means $\mu _k$, samples, and teacher targets for one batch (Tiny ImageNet-100 validation).}}{4}{}\protected@file@percent }
-\newlabel{fig:mdn_pca}{{2}{4}{}{figure.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Analysis and Observations}{4}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Validation kNN@1 across flow matching and diffusion runs, with scalar checkpoints for MDN, RNADE, and the deterministic baseline. Diffusion climbs faster and higher (22.36\% peak).}}{4}{}\protected@file@percent }
-\newlabel{fig:knn}{{3}{4}{}{figure.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces MDN multimodal samples (4{,}096 draws) projected to 2D via PCA and rendered as a hexbin heatmap, showing multi-cluster support.}}{4}{}\protected@file@percent }
-\newlabel{fig:mdn_hex}{{4}{4}{}{figure.4}{}}
+\citation{song2020ddim}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Schematic of the flow-matching head. Coupling layers transform Gaussian noise into latent predictions, conditioned on context features and time embeddings.}}{4}{}\protected@file@percent }
+\newlabel{fig:flow_scheme}{{4}{4}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Diffusion over Embeddings}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}GitHub Repository}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Experiments and Evaluation}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Setup}{4}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Schematic of the diffusion head. Teacher embeddings are treated as clean data; noise schedules and a U-Net-like predictor implement iterative denoising in latent space.}}{4}{}\protected@file@percent }
+\newlabel{fig:diffusion_scheme}{{5}{4}{}{figure.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Validation kNN@1 over Tiny ImageNet-100.}}{4}{}\protected@file@percent }
+\newlabel{tab:results}{{I}{4}{}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Results}{4}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Latent distributions (PCA projections) for each predictor.}}{5}{}\protected@file@percent }
+\newlabel{fig:distributions_row}{{6}{5}{}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Loss curves aligned across predictors.}}{5}{}\protected@file@percent }
+\newlabel{fig:loss_row}{{7}{5}{}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces kNN@1 validation curves for all five predictors.}}{5}{}\protected@file@percent }
+\newlabel{fig:knn_row}{{8}{5}{}{figure.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Visualizations}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Analysis and Observations}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IX}Next Steps}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {X}Conclusion}{5}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{assran2023jepa}{1}
 \bibcite{grill2020byol}{2}
 \bibcite{chen2020moco}{3}
-\bibcite{dosovitskiy2020vit}{4}
-\bibcite{he2020momentum}{5}
-\bibcite{bishop1994mdn}{6}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Isometric 3D view of MDN samples projected onto the first three principal components; each cluster corresponds to a distinct mixture mode.}}{5}{}\protected@file@percent }
-\newlabel{fig:mdn_iso}{{5}{5}{}{figure.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Masking policy illustration: context patches (green) and targets (red) on Tiny ImageNet ($8\\times 8$ grid, $64\\times 64$ image).}}{5}{}\protected@file@percent }
-\newlabel{fig:masking}{{6}{5}{}{figure.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {IX}Next Steps}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {X}Conclusion}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{5}{}\protected@file@percent }
-\bibcite{germain2015made}{7}
-\bibcite{uria2014rnade}{8}
-\bibcite{dinh2017realnvp}{9}
-\bibcite{kingma2018glow}{10}
-\bibcite{lipman2023flowmatching}{11}
-\bibcite{ho2020ddpm}{12}
-\bibcite{song2020ddim}{13}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Projected embedding distributions sampled directly from checkpoints. Left column: 2D PCA hexbins with teacher targets (cyan); right column: 3D PCA scatter plots. Rows correspond to the MDN head (top), autoregressive RNADE head (middle), and the deterministic I-JEPA baseline (bottom). Probabilistic heads form multi-modal, high-entropy clusters, whereas the deterministic predictor collapses to a single ridge.}}{6}{}\protected@file@percent }
-\newlabel{fig:dist_comparison}{{7}{6}{}{figure.7}{}}
-\bibcite{le2015tinyimagenet}{14}
-\bibcite{loshchilov2018adamw}{15}
-\gdef \@abspage@last{7}
+\bibcite{he2020momentum}{4}
+\bibcite{he2022mae}{5}
+\bibcite{germain2015made}{6}
+\bibcite{uria2014rnade}{7}
+\bibcite{perez2018film}{8}
+\bibcite{bishop1994mdn}{9}
+\bibcite{dinh2017realnvp}{10}
+\bibcite{kingma2018glow}{11}
+\bibcite{lipman2023flowmatching}{12}
+\bibcite{ho2020ddpm}{13}
+\bibcite{song2020ddim}{14}
+\bibcite{dosovitskiy2020vit}{15}
+\bibcite{le2015tinyimagenet}{16}
+\bibcite{loshchilov2018adamw}{17}
+\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
+\gdef \@abspage@last{6}
