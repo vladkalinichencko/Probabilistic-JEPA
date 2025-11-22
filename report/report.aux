@@ -30,14 +30,13 @@
 \citation{lipman2023flowmatching}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces High-level schematic of the deterministic I-JEPA architecture. The student sees only context patches, the teacher encodes the full image, and the predictor regresses target embeddings.}}{3}{}\protected@file@percent }
 \newlabel{fig:baseline_scheme}{{1}{3}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Mixture Density Network (MDN)}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Autoregressive RNADE Head}{3}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Schematic of the MDN predictor head. The JEPA backbone provides context and target queries; the MDN head outputs mixture weights and Gaussian parameters for each masked token.}}{3}{}\protected@file@percent }
 \newlabel{fig:mdn_scheme}{{2}{3}{}{figure.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Mixture Density Network (MDN)}{3}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Schematic of the autoregressive (RNADE-style) head. Context features condition a masked MLP that outputs mixture parameters coordinate-wise, implementing an autoregressive density over the embedding.}}{3}{}\protected@file@percent }
 \newlabel{fig:autoregressive_scheme}{{3}{3}{}{figure.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Autoregressive RNADE Head}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}RealNVP Flow Matching Head}{3}{}\protected@file@percent }
-\citation{song2021ddim}
 \citation{song2021ddim}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Schematic of the flow-matching head. Coupling layers transform Gaussian noise into latent predictions, conditioned on context features and time embeddings.}}{4}{}\protected@file@percent }
 \newlabel{fig:flow_scheme}{{4}{4}{}{figure.4}{}}
@@ -50,19 +49,13 @@
 \@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Validation kNN@1 over Tiny ImageNet-100.}}{4}{}\protected@file@percent }
 \newlabel{tab:results}{{I}{4}{}{table.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Results}{4}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Latent distributions (PCA projections) for each predictor.}}{5}{}\protected@file@percent }
-\newlabel{fig:distributions_row}{{6}{5}{}{figure.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Loss curves aligned across predictors.}}{5}{}\protected@file@percent }
-\newlabel{fig:loss_row}{{7}{5}{}{figure.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces kNN@1 validation curves for all five predictors.}}{5}{}\protected@file@percent }
-\newlabel{fig:knn_row}{{8}{5}{}{figure.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Visualizations}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Analysis and Observations}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {IX}Next Steps}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {X}Conclusion}{5}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{assran2023jepa}{1}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Visualizations}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Analysis and Observations}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IX}Limitations}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {X}Conclusion}{5}{}\protected@file@percent }
 \bibcite{grill2020byol}{2}
 \bibcite{chen2020moco}{3}
 \bibcite{chen2020momentum}{4}
@@ -77,7 +70,13 @@
 \bibcite{ho2020ddpm}{13}
 \bibcite{song2021ddim}{14}
 \bibcite{dosovitskiy2021vit}{15}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Latent distributions (PCA projections) for each predictor.}}{6}{}\protected@file@percent }
+\newlabel{fig:distributions_row}{{6}{6}{}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Loss curves aligned across predictors.}}{6}{}\protected@file@percent }
+\newlabel{fig:loss_row}{{7}{6}{}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces kNN@1 validation curves for all five predictors.}}{6}{}\protected@file@percent }
+\newlabel{fig:knn_row}{{8}{6}{}{figure.8}{}}
+\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
 \bibcite{le2015tinyimagenet}{16}
 \bibcite{loshchilov2019adamw}{17}
-\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
-\gdef \@abspage@last{6}
+\gdef \@abspage@last{7}

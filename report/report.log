@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.3.15)  21 NOV 2025 23:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.3.15)  23 NOV 2025 00:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -340,11 +340,11 @@ Underfull \hbox (badness 3148) in paragraph at lines 146--147
  []
 
 
-
-
 Underfull \hbox (badness 5954) in paragraph at lines 152--154
 \OT1/ptm/m/n/10 Here $\OML/cmm/m/it/10 z[]$ \OT1/ptm/m/n/10 is co-or-di-nate $\OML/cmm/m/it/10 d$ \OT1/ptm/m/n/10 of teacher to-ken $\OML/cmm/m/it/10 i$\OT1/ptm/m/n/10 , and
  []
+
+
 
 <figures/autoregression_scheme.jpeg, id=23, 2762.32pt x 1541.76pt>
 File: figures/autoregression_scheme.jpeg Graphic file (type jpg)
@@ -365,118 +365,122 @@ File: figures/diffusion_scheme.jpeg Graphic file (type jpg)
 Package pdftex.def Info: figures/diffusion_scheme.jpeg  used on input line 189.
 (pdftex.def)             Requested size: 242.52063pt x 135.353pt.
 
-
-<figures/i-jepa_distribution.png, id=29, 433.62pt x 361.35pt>
-File: figures/i-jepa_distribution.png Graphic file (type png)
-<use figures/i-jepa_distribution.png>
-Package pdftex.def Info: figures/i-jepa_distribution.png  used on input line 232.
-(pdftex.def)             Requested size: 92.87622pt x 77.3965pt.
-<figures/mdn_distribution.png, id=31, 433.62pt x 361.35pt>
-File: figures/mdn_distribution.png Graphic file (type png)
-<use figures/mdn_distribution.png>
-Package pdftex.def Info: figures/mdn_distribution.png  used on input line 236.
-(pdftex.def)             Requested size: 92.87622pt x 77.3965pt.
-<figures/autoregression_distribution.png, id=32, 433.62pt x 361.35pt>
-File: figures/autoregression_distribution.png Graphic file (type png)
-<use figures/autoregression_distribution.png>
-Package pdftex.def Info: figures/autoregression_distribution.png  used on input line 240.
-(pdftex.def)             Requested size: 92.87622pt x 77.3965pt.
-<figures/flow_matching_distribution.png, id=33, 562.1pt x 421.575pt>
-File: figures/flow_matching_distribution.png Graphic file (type png)
-<use figures/flow_matching_distribution.png>
-Package pdftex.def Info: figures/flow_matching_distribution.png  used on input line 244.
-(pdftex.def)             Requested size: 92.87622pt x 69.65335pt.
-<figures/diffusion_distribution.png, id=34, 433.62pt x 361.35pt>
-File: figures/diffusion_distribution.png Graphic file (type png)
-<use figures/diffusion_distribution.png>
-Package pdftex.def Info: figures/diffusion_distribution.png  used on input line 248.
-(pdftex.def)             Requested size: 92.87622pt x 77.3965pt.
-
-Overfull \hbox (68.38126pt too wide) in paragraph at lines 230--252
- [][] 
- []
-
-<figures/i-jepa_loss.png, id=35, 841.1425pt x 425.59pt>
-File: figures/i-jepa_loss.png Graphic file (type png)
-<use figures/i-jepa_loss.png>
-Package pdftex.def Info: figures/i-jepa_loss.png  used on input line 260.
-(pdftex.def)             Requested size: 92.87622pt x 46.99037pt.
-<figures/mdn_loss.png, id=36, 841.1425pt x 425.59pt>
-File: figures/mdn_loss.png Graphic file (type png)
-<use figures/mdn_loss.png>
-Package pdftex.def Info: figures/mdn_loss.png  used on input line 264.
-(pdftex.def)             Requested size: 92.87622pt x 46.99037pt.
-<figures/autoregression_loss.png, id=37, 841.1425pt x 425.59pt>
-File: figures/autoregression_loss.png Graphic file (type png)
-<use figures/autoregression_loss.png>
-Package pdftex.def Info: figures/autoregression_loss.png  used on input line 268.
-(pdftex.def)             Requested size: 92.87622pt x 46.99037pt.
-<figures/flow_matching_loss.jpg, id=38, 728.7225pt x 314.17375pt>
-File: figures/flow_matching_loss.jpg Graphic file (type jpg)
-<use figures/flow_matching_loss.jpg>
-Package pdftex.def Info: figures/flow_matching_loss.jpg  used on input line 272.
-(pdftex.def)             Requested size: 92.87622pt x 40.03864pt.
-<figures/diffusion_loss.png, id=39, 346.896pt x 231.264pt>
-File: figures/diffusion_loss.png Graphic file (type png)
-<use figures/diffusion_loss.png>
-Package pdftex.def Info: figures/diffusion_loss.png  used on input line 276.
-(pdftex.def)             Requested size: 92.87622pt x 61.91632pt.
-
-Overfull \hbox (68.38126pt too wide) in paragraph at lines 258--280
- [][] 
- []
-
-<figures/i-jepa_knn.png, id=40, 656.4525pt x 315.1775pt>
-File: figures/i-jepa_knn.png Graphic file (type png)
-<use figures/i-jepa_knn.png>
-Package pdftex.def Info: figures/i-jepa_knn.png  used on input line 288.
-(pdftex.def)             Requested size: 92.87622pt x 44.59103pt.
-<figures/mdn_knn.png, id=41, 656.4525pt x 315.1775pt>
-File: figures/mdn_knn.png Graphic file (type png)
-<use figures/mdn_knn.png>
-Package pdftex.def Info: figures/mdn_knn.png  used on input line 292.
-(pdftex.def)             Requested size: 92.87622pt x 44.59103pt.
-<figures/autoregression_knn.png, id=42, 656.4525pt x 315.1775pt>
-File: figures/autoregression_knn.png Graphic file (type png)
-<use figures/autoregression_knn.png>
-Package pdftex.def Info: figures/autoregression_knn.png  used on input line 296.
-(pdftex.def)             Requested size: 92.87622pt x 44.59103pt.
-<figures/flow_matching_knn.jpg, id=43, 726.715pt x 315.1775pt>
-File: figures/flow_matching_knn.jpg Graphic file (type jpg)
-<use figures/flow_matching_knn.jpg>
-Package pdftex.def Info: figures/flow_matching_knn.jpg  used on input line 300.
-(pdftex.def)             Requested size: 92.87622pt x 40.27718pt.
-<figures/diffusion_knn.png, id=44, 346.896pt x 231.264pt>
-File: figures/diffusion_knn.png Graphic file (type png)
-<use figures/diffusion_knn.png>
-Package pdftex.def Info: figures/diffusion_knn.png  used on input line 304.
-(pdftex.def)             Requested size: 92.87622pt x 61.91632pt.
-
-Overfull \hbox (68.38126pt too wide) in paragraph at lines 286--308
- [][] 
+Underfull \hbox (badness 3439) in paragraph at lines 203--204
+[]\OT1/ptm/b/n/10 Distribution sam-pling method-ol-ogy\OT1/ptm/m/n/10 : For vi-su-al-iz-ing
  []
 
 
-Underfull \vbox (badness 3428) has occurred while \output is active []
+
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 205.
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
+Overfull \hbox (16.38197pt too wide) in paragraph at lines 212--223
+ [] 
+ []
 
 
 
 [4 <./figures/flow_matching_scheme.jpeg> <./figures/diffusion_scheme.jpeg>]
-Underfull \hbox (badness 5607) in paragraph at lines 316--317
-[]\OT1/ptm/b/n/10 Diffusion qual-ity. \OT1/ptm/m/n/10 Dif-fu-sion achieves the high-est
+<figures/i-jepa_distribution.png, id=38, 578.16pt x 433.62pt>
+File: figures/i-jepa_distribution.png Graphic file (type png)
+<use figures/i-jepa_distribution.png>
+Package pdftex.def Info: figures/i-jepa_distribution.png  used on input line 237.
+(pdftex.def)             Requested size: 103.19843pt x 77.39319pt.
+<figures/mdn_distribution.png, id=40, 578.16pt x 433.62pt>
+File: figures/mdn_distribution.png Graphic file (type png)
+<use figures/mdn_distribution.png>
+Package pdftex.def Info: figures/mdn_distribution.png  used on input line 241.
+(pdftex.def)             Requested size: 103.19843pt x 77.39319pt.
+<figures/autoregression_distribution.png, id=41, 578.16pt x 433.62pt>
+File: figures/autoregression_distribution.png Graphic file (type png)
+<use figures/autoregression_distribution.png>
+Package pdftex.def Info: figures/autoregression_distribution.png  used on input line 245.
+(pdftex.def)             Requested size: 103.19843pt x 77.39319pt.
+<figures/flow_matching_distribution.png, id=42, 562.1pt x 562.1pt>
+File: figures/flow_matching_distribution.png Graphic file (type png)
+<use figures/flow_matching_distribution.png>
+Package pdftex.def Info: figures/flow_matching_distribution.png  used on input line 249.
+(pdftex.def)             Requested size: 103.19843pt x 103.19778pt.
+<figures/diffusion_distribution.png, id=43, 578.16pt x 433.62pt>
+File: figures/diffusion_distribution.png Graphic file (type png)
+<use figures/diffusion_distribution.png>
+Package pdftex.def Info: figures/diffusion_distribution.png  used on input line 253.
+(pdftex.def)             Requested size: 103.19843pt x 77.39319pt.
+
+Overfull \hbox (65.38673pt too wide) in paragraph at lines 234--257
+[]  [] 
+ []
+
+<figures/i-jepa_loss.png, id=44, 841.1425pt x 425.59pt>
+File: figures/i-jepa_loss.png Graphic file (type png)
+<use figures/i-jepa_loss.png>
+Package pdftex.def Info: figures/i-jepa_loss.png  used on input line 265.
+(pdftex.def)             Requested size: 103.19843pt x 52.21153pt.
+<figures/mdn_loss.png, id=45, 358.4592pt x 289.08pt>
+File: figures/mdn_loss.png Graphic file (type png)
+<use figures/mdn_loss.png>
+Package pdftex.def Info: figures/mdn_loss.png  used on input line 269.
+(pdftex.def)             Requested size: 103.19843pt x 83.22232pt.
+<figures/autoregression_loss.png, id=46, 625.3764pt x 400.8576pt>
+File: figures/autoregression_loss.png Graphic file (type png)
+<use figures/autoregression_loss.png>
+Package pdftex.def Info: figures/autoregression_loss.png  used on input line 273.
+(pdftex.def)             Requested size: 103.19843pt x 66.14476pt.
+<figures/flow_matching_loss.jpg, id=47, 728.7225pt x 314.17375pt>
+File: figures/flow_matching_loss.jpg Graphic file (type jpg)
+<use figures/flow_matching_loss.jpg>
+Package pdftex.def Info: figures/flow_matching_loss.jpg  used on input line 277.
+(pdftex.def)             Requested size: 103.19843pt x 44.48738pt.
+<figures/diffusion_loss.png, id=48, 346.896pt x 231.264pt>
+File: figures/diffusion_loss.png Graphic file (type png)
+<use figures/diffusion_loss.png>
+Package pdftex.def Info: figures/diffusion_loss.png  used on input line 281.
+(pdftex.def)             Requested size: 103.19843pt x 68.79747pt.
+
+Overfull \hbox (65.38673pt too wide) in paragraph at lines 262--285
+[]  [] 
+ []
+
+<figures/i-jepa_knn.png, id=49, 656.4525pt x 315.1775pt>
+File: figures/i-jepa_knn.png Graphic file (type png)
+<use figures/i-jepa_knn.png>
+Package pdftex.def Info: figures/i-jepa_knn.png  used on input line 293.
+(pdftex.def)             Requested size: 103.19843pt x 49.54453pt.
+<figures/mdn_knn.png, id=50, 367.8543pt x 289.08pt>
+File: figures/mdn_knn.png Graphic file (type png)
+<use figures/mdn_knn.png>
+Package pdftex.def Info: figures/mdn_knn.png  used on input line 297.
+(pdftex.def)             Requested size: 103.19843pt x 81.09622pt.
+<figures/autoregression_knn.png, id=51, 621.0402pt x 400.8576pt>
+File: figures/autoregression_knn.png Graphic file (type png)
+<use figures/autoregression_knn.png>
+Package pdftex.def Info: figures/autoregression_knn.png  used on input line 301.
+(pdftex.def)             Requested size: 103.19843pt x 66.60962pt.
+<figures/flow_matching_knn.jpg, id=52, 726.715pt x 315.1775pt>
+File: figures/flow_matching_knn.jpg Graphic file (type jpg)
+<use figures/flow_matching_knn.jpg>
+Package pdftex.def Info: figures/flow_matching_knn.jpg  used on input line 305.
+(pdftex.def)             Requested size: 103.19843pt x 44.75455pt.
+<figures/diffusion_knn.png, id=53, 346.896pt x 231.264pt>
+File: figures/diffusion_knn.png Graphic file (type png)
+<use figures/diffusion_knn.png>
+Package pdftex.def Info: figures/diffusion_knn.png  used on input line 309.
+(pdftex.def)             Requested size: 103.19843pt x 68.79747pt.
+
+Overfull \hbox (65.38673pt too wide) in paragraph at lines 290--313
+[]  [] 
  []
 
 
 
+(./report.bbl
+
+[5]
 
 
-[5 <./figures/i-jepa_distribution.png> <./figures/mdn_distribution.png> <./figures/autoregression_distribution.png> <./figures/flow_matching_distribution.png> <./figures/diffusion_distribution.png> <./figures/i-jepa_loss.png> <./figures/mdn_loss.png> <./figures/autoregression_loss.png> <./figures/flow_matching_loss.jpg> <./figures/diffusion_loss.png> <./figures/i-jepa_knn.png> <./figures/mdn_knn.png> <./figures/autoregression_knn.png> <./figures/flow_matching_knn.jpg> <./figures/diffusion_knn.png>] (./report.bbl
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 136.
- (/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/psnfss/ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-)
 
-)
+[6 <./figures/i-jepa_distribution.png> <./figures/mdn_distribution.png> <./figures/autoregression_distribution.png> <./figures/flow_matching_distribution.png> <./figures/diffusion_distribution.png> <./figures/i-jepa_loss.png> <./figures/mdn_loss.png> <./figures/autoregression_loss.png> <./figures/flow_matching_loss.jpg> <./figures/diffusion_loss.png> <./figures/i-jepa_knn.png> <./figures/mdn_knn.png> <./figures/autoregression_knn.png> <./figures/flow_matching_knn.jpg> <./figures/diffusion_knn.png>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -490,25 +494,29 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[6] (./report.aux)
+
+
+[7
+
+] (./report.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4492 strings out of 473190
- 75026 string characters out of 5704335
- 480259 words of memory out of 5000000
- 27688 multiletter control sequences out of 15000+600000
- 600776 words of font info for 115 fonts, out of 8000000 for 9000
+ 4495 strings out of 473190
+ 75096 string characters out of 5704335
+ 485107 words of memory out of 5000000
+ 27691 multiletter control sequences out of 15000+600000
+ 601090 words of font info for 116 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,18n,65p,935b,368s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,18n,65p,991b,356s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on report.pdf (6 pages, 10893196 bytes).
+Output written on report.pdf (7 pages, 10787642 bytes).
 PDF statistics:
- 150 PDF objects out of 1000 (max. 8388607)
- 70 compressed objects within 1 object stream
+ 155 PDF objects out of 1000 (max. 8388607)
+ 74 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  101 words of extra memory for PDF output out of 10000 (max. 10000000)
 

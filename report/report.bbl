@@ -7,8 +7,7 @@
 \providecommand{\BIBentrySTDinterwordspacing}{\spaceskip=0pt\relax}
 \providecommand{\BIBentryALTinterwordstretchfactor}{4}
 \providecommand{\BIBentryALTinterwordspacing}{\spaceskip=\fontdimen2\font plus
-\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
-  \fontdimen4\font\relax}
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus \fontdimen4\font\relax}
 \providecommand{\BIBforeignlanguage}[2]{{%
 \expandafter\ifx\csname l@#1\endcsname\relax
 \typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
@@ -23,136 +22,87 @@
 
 \bibitem{assran2023jepa}
 \BIBentryALTinterwordspacing
-M.~Assran, Q.~Duval, I.~Misra, P.~Bojanowski, P.~Vincent, M.~Rabbat, Y.~LeCun,
-  and N.~Ballas, ``Self-supervised learning from images with a joint-embedding
-  predictive architecture,'' in \emph{Proceedings of the 2023 IEEE/CVF
-  Conference on Computer Vision and Pattern Recognition (CVPR)}, 2023.
-  [Online]. Available: \url{https://arxiv.org/abs/2301.08243}
+M.~Assran, Q.~Duval, I.~Misra, P.~Bojanowski, P.~Vincent, M.~Rabbat, Y.~LeCun, and N.~Ballas, ``Self-supervised learning from images with a joint-embedding predictive architecture,'' in \emph{Proceedings of the 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 2023. [Online]. Available: \url{https://arxiv.org/abs/2301.08243}
 \BIBentrySTDinterwordspacing
 
 \bibitem{grill2020byol}
 \BIBentryALTinterwordspacing
-J.-B. Grill, F.~Strub, F.~Altché, C.~Tallec, P.~Richemond, E.~Buchatskaya,
-  C.~Doersch, B.~Pires, Z.~Guo, M.~Gheshlaghi~Azar, B.~Piot, K.~Kavukcuoglu,
-  R.~Munos, and M.~Valko, ``Bootstrap your own latent: A new approach to
-  self-supervised learning,'' in \emph{Advances in Neural Information
-  Processing Systems}, 2020. [Online]. Available:
-  \url{https://arxiv.org/abs/2006.07733}
+J.-B. Grill, F.~Strub, F.~Altché, C.~Tallec, P.~Richemond, E.~Buchatskaya, C.~Doersch, B.~Pires, Z.~Guo, M.~Gheshlaghi~Azar, B.~Piot, K.~Kavukcuoglu, R.~Munos, and M.~Valko, ``Bootstrap your own latent: A new approach to self-supervised learning,'' in \emph{Advances in Neural Information Processing Systems}, 2020. [Online]. Available: \url{https://arxiv.org/abs/2006.07733}
 \BIBentrySTDinterwordspacing
 
 \bibitem{chen2020moco}
 \BIBentryALTinterwordspacing
-T.~Chen, S.~Kornblith, M.~Norouzi, and G.~Hinton, ``Momentum contrast for
-  unsupervised visual representation learning,'' in \emph{Proceedings of the
-  IEEE/CVF Conference on Computer Vision and Pattern Recognition}, 2020.
-  [Online]. Available: \url{https://arxiv.org/abs/1911.05722}
+T.~Chen, S.~Kornblith, M.~Norouzi, and G.~Hinton, ``Momentum contrast for unsupervised visual representation learning,'' in \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, 2020. [Online]. Available: \url{https://arxiv.org/abs/1911.05722}
 \BIBentrySTDinterwordspacing
 
 \bibitem{chen2020momentum}
 \BIBentryALTinterwordspacing
-X.~Chen, H.~Fan, R.~Girshick, and K.~He, ``Momentum contrast v2 for
-  unsupervised visual representation learning,'' \emph{arXiv preprint}, 2020.
-  [Online]. Available: \url{https://arxiv.org/abs/2003.04297}
+X.~Chen, H.~Fan, R.~Girshick, and K.~He, ``Momentum contrast v2 for unsupervised visual representation learning,'' \emph{arXiv preprint}, 2020. [Online]. Available: \url{https://arxiv.org/abs/2003.04297}
 \BIBentrySTDinterwordspacing
 
 \bibitem{he2022mae}
 \BIBentryALTinterwordspacing
-K.~He, X.~Chen, S.~Xie, Y.~Li, P.~Dollár, and R.~Girshick, ``Masked
-  autoencoders are scalable vision learners,'' in \emph{Proceedings of the
-  IEEE/CVF Conference on Computer Vision and Pattern Recognition}, 2022.
-  [Online]. Available: \url{https://arxiv.org/abs/2111.06377}
+K.~He, X.~Chen, S.~Xie, Y.~Li, P.~Dollár, and R.~Girshick, ``Masked autoencoders are scalable vision learners,'' in \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, 2022. [Online]. Available: \url{https://arxiv.org/abs/2111.06377}
 \BIBentrySTDinterwordspacing
 
 \bibitem{germain2015made}
 \BIBentryALTinterwordspacing
-M.~Germain, K.~Gregor, I.~Murray, and H.~Larochelle, ``Made: Masked autoencoder
-  for distribution estimation,'' in \emph{International Conference on Machine
-  Learning}, 2015. [Online]. Available: \url{https://arxiv.org/abs/1502.03509}
+M.~Germain, K.~Gregor, I.~Murray, and H.~Larochelle, ``Made: Masked autoencoder for distribution estimation,'' in \emph{International Conference on Machine Learning}, 2015. [Online]. Available: \url{https://arxiv.org/abs/1502.03509}
 \BIBentrySTDinterwordspacing
 
 \bibitem{uria2013rnade}
 \BIBentryALTinterwordspacing
-B.~Uria, I.~Murray, and H.~Larochelle, ``Rnade: The real-valued neural
-  autoregressive density estimator,'' in \emph{Advances in Neural Information
-  Processing Systems}, vol.~26, 2013, pp. 2175--2183. [Online]. Available:
-  \url{https://arxiv.org/abs/1306.0186}
+B.~Uria, I.~Murray, and H.~Larochelle, ``Rnade: The real-valued neural autoregressive density estimator,'' in \emph{Advances in Neural Information Processing Systems}, vol.~26, 2013, pp. 2175--2183. [Online]. Available: \url{https://arxiv.org/abs/1306.0186}
 \BIBentrySTDinterwordspacing
 
 \bibitem{perez2018film}
 \BIBentryALTinterwordspacing
-E.~Perez, F.~Strub, H.~de~Vries, V.~Dumoulin, and A.~Courville, ``Film: Visual
-  reasoning with a general conditioning layer,'' in \emph{Thirty-Second AAAI
-  Conference on Artificial Intelligence}, 2018. [Online]. Available:
-  \url{https://arxiv.org/abs/1709.07871}
+E.~Perez, F.~Strub, H.~de~Vries, V.~Dumoulin, and A.~Courville, ``Film: Visual reasoning with a general conditioning layer,'' in \emph{Thirty-Second AAAI Conference on Artificial Intelligence}, 2018. [Online]. Available: \url{https://arxiv.org/abs/1709.07871}
 \BIBentrySTDinterwordspacing
 
 \bibitem{bishop1994mdn}
 \BIBentryALTinterwordspacing
-C.~M. Bishop, ``Mixture density networks,'' Neural Computing Research Group,
-  Aston University, Tech. Rep. NCRG/94/004, 1994. [Online]. Available:
-  \url{https://www.microsoft.com/en-us/research/publication/mixture-density-networks/}
+C.~M. Bishop, ``Mixture density networks,'' Neural Computing Research Group, Aston University, Tech. Rep. NCRG/94/004, 1994. [Online]. Available: \url{https://www.microsoft.com/en-us/research/publication/mixture-density-networks/}
 \BIBentrySTDinterwordspacing
 
 \bibitem{dinh2017realnvp}
 \BIBentryALTinterwordspacing
-L.~Dinh, J.~Sohl-Dickstein, and S.~Bengio, ``Density estimation using real
-  {{NVP}},'' in \emph{International Conference on Learning Representations},
-  2017. [Online]. Available: \url{https://arxiv.org/abs/1605.08803}
+L.~Dinh, J.~Sohl-Dickstein, and S.~Bengio, ``Density estimation using real {{NVP}},'' in \emph{International Conference on Learning Representations}, 2017. [Online]. Available: \url{https://arxiv.org/abs/1605.08803}
 \BIBentrySTDinterwordspacing
 
 \bibitem{kingma2018glow}
 \BIBentryALTinterwordspacing
-D.~P. Kingma and P.~Dhariwal, ``Glow: Generative flow with invertible $1\times
-  1$ convolutions,'' in \emph{Advances in Neural Information Processing
-  Systems}, 2018. [Online]. Available: \url{https://arxiv.org/abs/1807.03039}
+D.~P. Kingma and P.~Dhariwal, ``Glow: Generative flow with invertible $1\times 1$ convolutions,'' in \emph{Advances in Neural Information Processing Systems}, 2018. [Online]. Available: \url{https://arxiv.org/abs/1807.03039}
 \BIBentrySTDinterwordspacing
 
 \bibitem{lipman2023flowmatching}
 \BIBentryALTinterwordspacing
-Y.~Lipman, R.~T.~Q. Chen, H.~Ben-Hamu, M.~Nickel, M.~Le, and E.~Fetaya, ``Flow
-  matching for generative modeling,'' in \emph{International Conference on
-  Learning Representations}, 2023. [Online]. Available:
-  \url{https://arxiv.org/abs/2210.02747}
+Y.~Lipman, R.~T.~Q. Chen, H.~Ben-Hamu, M.~Nickel, M.~Le, and E.~Fetaya, ``Flow matching for generative modeling,'' in \emph{International Conference on Learning Representations}, 2023. [Online]. Available: \url{https://arxiv.org/abs/2210.02747}
 \BIBentrySTDinterwordspacing
 
 \bibitem{ho2020ddpm}
 \BIBentryALTinterwordspacing
-J.~Ho, A.~Jain, and P.~Abbeel, ``Denoising diffusion probabilistic models,'' in
-  \emph{Advances in Neural Information Processing Systems}, 2020. [Online].
-  Available: \url{https://arxiv.org/abs/2006.11239}
+J.~Ho, A.~Jain, and P.~Abbeel, ``Denoising diffusion probabilistic models,'' in \emph{Advances in Neural Information Processing Systems}, 2020. [Online]. Available: \url{https://arxiv.org/abs/2006.11239}
 \BIBentrySTDinterwordspacing
 
 \bibitem{song2021ddim}
 \BIBentryALTinterwordspacing
-J.~Song, C.~Meng, and S.~Ermon, ``Denoising diffusion implicit models,'' in
-  \emph{International Conference on Learning Representations}, 2021. [Online].
-  Available: \url{https://arxiv.org/abs/2010.02502}
+J.~Song, C.~Meng, and S.~Ermon, ``Denoising diffusion implicit models,'' in \emph{International Conference on Learning Representations}, 2021. [Online]. Available: \url{https://arxiv.org/abs/2010.02502}
 \BIBentrySTDinterwordspacing
 
 \bibitem{dosovitskiy2021vit}
 \BIBentryALTinterwordspacing
-A.~Dosovitskiy, L.~Beyer, A.~Kolesnikov, D.~Weissenborn, X.~Zhai,
-  T.~Unterthiner, M.~Dehghani, M.~Minderer, G.~Heigold, S.~Gelly, J.~Uszkoreit,
-  and N.~Houlsby, ``An image is worth 16×16 words: Transformers for image
-  recognition at scale,'' in \emph{International Conference on Learning
-  Representations}, 2021. [Online]. Available:
-  \url{https://arxiv.org/abs/2010.11929}
+A.~Dosovitskiy, L.~Beyer, A.~Kolesnikov, D.~Weissenborn, X.~Zhai, T.~Unterthiner, M.~Dehghani, M.~Minderer, G.~Heigold, S.~Gelly, J.~Uszkoreit, and N.~Houlsby, ``An image is worth 16×16 words: Transformers for image recognition at scale,'' in \emph{International Conference on Learning Representations}, 2021. [Online]. Available: \url{https://arxiv.org/abs/2010.11929}
 \BIBentrySTDinterwordspacing
 
 \bibitem{le2015tinyimagenet}
 \BIBentryALTinterwordspacing
-Y.~Le and X.~Yang, ``Tiny imagenet visual recognition challenge,'' Stanford
-  CS231n course project, 2015, the Tiny ImageNet dataset contains 100{,}000
-  training images and 10{,}000 test images across 200 classes, with each image
-  resized to 64×64 pixels【261889584725610†L26-L30】. [Online]. Available:
-  \url{https://www.kaggle.com/c/tiny-imagenet}
+Y.~Le and X.~Yang, ``Tiny imagenet visual recognition challenge,'' Stanford CS231n course project, 2015, the Tiny ImageNet dataset contains 100{,}000 training images and 10{,}000 test images across 200 classes, with each image resized to 64×64 pixels【261889584725610†L26-L30】. [Online]. Available: \url{https://www.kaggle.com/c/tiny-imagenet}
 \BIBentrySTDinterwordspacing
 
 \bibitem{loshchilov2019adamw}
 \BIBentryALTinterwordspacing
-I.~Loshchilov and F.~Hutter, ``Decoupled weight decay regularization,'' in
-  \emph{International Conference on Learning Representations}, 2019. [Online].
-  Available: \url{https://arxiv.org/abs/1711.05101}
+I.~Loshchilov and F.~Hutter, ``Decoupled weight decay regularization,'' in \emph{International Conference on Learning Representations}, 2019. [Online]. Available: \url{https://arxiv.org/abs/1711.05101}
 \BIBentrySTDinterwordspacing
 
 \end{thebibliography}
