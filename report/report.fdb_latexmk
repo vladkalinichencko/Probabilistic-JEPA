@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex report"] 1763846915.19248 "report.aux" "report.bbl" "report" 1763887229.80964 0
+["bibtex report"] 1763846915.19248 "report.aux" "report.bbl" "report" 1763887547.36502 0
   "./references.bib" 1763758169.89265 7118 ad68eec06ba03a92981e3199a09c9ece ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1741388039 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "report.aux" 1763887229.61159 6136 6435c05b4f04d0689cc287f87405a219 "pdflatex"
+  "report.aux" 1763887547.16338 6136 6435c05b4f04d0689cc287f87405a219 "pdflatex"
   (generated)
   "report.bbl"
   "report.blg"
   (rewritten before read)
-["pdflatex"] 1763887227.82159 "/Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex" "report.pdf" "report" 1763887229.80977 0
-  "/Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex" 1763887205.86363 31687 46dee2115cd49f25133d42048e15ec15 ""
+["pdflatex"] 1763887545.324 "/Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex" "report.pdf" "report" 1763887547.36514 0
+  "/Users/vladislavkalinichenko/VSCodeProjects/Probabilistic-JEPA/report/report.tex" 1763887313.94391 31734 87658ecaca35c22f3e37381553236e13 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1741388039 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/fontname/texfonts.map" 1741388039 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/pdftex/updmap/pdftex.map" 1741388039 5466553 2748998d7db8078826afa1f272036265 ""
@@ -117,9 +117,9 @@
   "figures/mdn_knn.png" 1763838721.07525 18563 a3aefe63c8750b3eaf0104f4cb32baa7 ""
   "figures/mdn_loss.png" 1763838721.07109 19544 bdb296af70c4b97dac1f03faad650cbf ""
   "figures/mdn_scheme.jpeg" 1763738894.04727 2337527 155349a84573c925caece30b7523e1ae ""
-  "report.aux" 1763887229.61159 6136 6435c05b4f04d0689cc287f87405a219 "pdflatex"
+  "report.aux" 1763887547.16338 6136 6435c05b4f04d0689cc287f87405a219 "pdflatex"
   "report.bbl" 1763846915.28454 6799 b8cd0c15dd725330ed202b60ac39f566 "bibtex report"
-  "report.tex" 1763887205.86363 31687 46dee2115cd49f25133d42048e15ec15 ""
+  "report.tex" 1763887313.94391 31734 87658ecaca35c22f3e37381553236e13 ""
   (generated)
   "report.aux"
   "report.log"
