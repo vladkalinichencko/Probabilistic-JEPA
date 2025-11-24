@@ -13,3 +13,4 @@ datasets
 plotly
 tensorboard
 kaleido
+streamlit
