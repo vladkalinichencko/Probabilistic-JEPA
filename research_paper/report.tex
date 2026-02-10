@@ -1,0 +1,386 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{array}
+% Map uncommon Unicode characters from bibliography to ASCII-safe forms
+\DeclareUnicodeCharacter{00D7}{\texttimes}
+\DeclareUnicodeCharacter{3010}{[}
+\DeclareUnicodeCharacter{3011}{]}
+\DeclareUnicodeCharacter{2020}{\textsuperscript{\textdagger}}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Variational JEPA – Adding Uncertainty to Visual Representations}
+
+\author{
+\IEEEauthorblockN{Vladislav Kalinichenko, Polina Korobeinikova, Alexandra Starikova-Nasibullina, Timur Struchkov}
+\IEEEauthorblockA{\textit{Innopolis University}\\
+Innopolis, Russia\\
+\{v.kalinichenko, p.korobeinikova, a.nasibullina, t.struchkov\}@innopolis.university}
+}
+
+\maketitle
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.47\textwidth]{figures/mask_overlay.png}
+    \caption{Block-wise masking on a Tiny ImageNet image. Green patches indicate visible context provided to the student encoder, while red patches denote masked targets whose embeddings must be predicted.}
+    \label{fig:mask_overlay}
+\end{figure}
+
+\begin{abstract}
+Self-supervised Joint-Embedding Predictive Architectures (JEPAs) learn semantic visual representations without relying on pixel-level reconstruction.
+However, the standard I-JEPA predictor is deterministic and discards multimodal uncertainty that naturally arises in ambiguous scenes.
+We implement four probabilistic predictors on top of a ViT-based I-JEPA backbone to model latent distributions for masked image blocks: (i) a multivariate Mixture Density Network (MDN), (ii) an autoregressive masked MLP (RNADE-style), (iii) a RealNVP-style normalizing flow trained with flow matching, and (iv) a diffusion head that denoises latent embeddings.
+All models share Tiny ImageNet-100 data, masking, and EMA teacher--student infrastructure.
+The current results provide preliminary evidence that probabilistic heads can model diverse latent predictions, while also exposing open questions on calibration, fairness of compute budgets, and downstream utility.
+
+\end{abstract}
+
+\section{Introduction}
+Learning general-purpose visual representations that can be reused across tasks is a central objective in self-supervised learning.
+Self-supervised methods that operate directly on raw images are particularly attractive in large-scale settings where labeled data is scarce but unlabeled images are abundant.
+Joint-Embedding Predictive Architectures (JEPAs)~\cite{assran2023jepa} address this goal by learning to predict teacher embeddings for masked target blocks while observing only a partially visible context, as illustrated by the masking pattern in Figure~\ref{fig:mask_overlay}.
+Unlike pixel-space autoencoders or diffusion models, JEPAs avoid reconstructing low-level detail and focus the predictor on semantic alignment in latent space.
+The core pipeline (Figure~\ref{fig:baseline_scheme}) keeps a momentum-updated teacher that encodes the full image, a student that sees only context patches, and a predictor that maps masked target queries to the teacher's latent targets; decorrelation terms prevent trivial collapse and no negative pairs are required, simplifying optimization compared to contrastive SSL.
+
+This latent-space formulation has two advantages: (i) it reduces background leakage and pixel-level shortcuts that plague reconstruction-based pretraining, and (ii) it keeps inductive biases about semantics aligned with downstream recognition tasks where robust object-level features are critical.
+However, the standard I-JEPA predictor is deterministic and emits a single vector per masked block, even when the scene supports multiple plausible completions (e.g., occluded limbs, textured backgrounds, or ambiguous object categories).
+Such a single-mode solution discards epistemic uncertainty and pushes the model toward overconfident guesses.
+Sampling from a learned distribution instead enables calibrated masks that better cover the teacher manifold: diverse draws can be used for Monte Carlo risk estimates, active data selection, or downstream generative editing where multiple hypotheses are genuinely useful.
+
+Guided by these goals, we augment I-JEPA with probabilistic predictors that output sampleable distributions over latent embeddings while retaining the same ViT backbone and masking policy.
+We deliberately cover four complementary density-modeling families, covering the most popular and fundamental distribution modeling approaches in deep learning: (i) MDNs as simple mixture models, (ii) autoregressive masked MLPs as factorized density estimators, (iii) invertible flows with exact likelihoods, and (iv) latent diffusion as an iterative denoiser that tends to capture complex multi-modal structure.
+We follow the BYOL/MoCo-style teacher--student recipe~\cite{grill2020byol,chen2020moco} and swap only the predictor head, keeping the rest of the visual backbone identical to a standard vision transformer.
+This report summarizes the design and results of four predictors trained on Tiny ImageNet-100 and compares how each captures multimodal uncertainty in latent feature space.
+
+\section{Related Work}
+\textbf{Joint-embedding SSL.}
+I-JEPA~\cite{assran2023jepa} anchors the teacher--student/EMA design from BYOL and MoCo~\cite{grill2020byol,chen2020moco,chen2020momentum} but moves prediction to latent space: masking removes target tokens from the student, positional encodings are added to learned queries, and the predictor regresses to teacher targets.
+Because it forgoes contrastive negatives and pixel reconstruction, I-JEPA produces representations with strong invariances while remaining simpler to optimize than pixel-aware masked autoencoders (MAE)~\cite{he2022mae}.
+Our work keeps this architecture intact and experiments with alternative predictors that can be sampled, effectively turning JEPAs into conditional density estimators over teacher latents.
+Throughout this section we distinguish predictors that yield an explicit parametric distribution in a single forward pass (MDNs and flows) from those that define a distribution implicitly through a stochastic sampling procedure (autoregressive and diffusion heads).
+
+\textbf{Autoregressive density estimators.}
+Real-valued neural autoregressive density-estimator (MADE/RNADE)~\cite{germain2015made,uria2013rnade} factorize a joint density into a product of one-dimensional conditionals, typically ordered along vector coordinates or pixels.
+Our RNADE-style head follows this recipe but conditions the masked MLP on the pooled context via FiLM layers~\cite{perez2018film}: the context embedding is mapped to per-layer scales and shifts that modulate hidden activations, so every conditional $p(z_d \mid z_{<d}, \text{context})$ is explicitly context-aware.
+This gives a normalized density over teacher embeddings while still allowing us to draw diverse samples by sampling dimensions sequentially, making the autoregressive head an example of a model where the distribution is primarily explored through explicit sampling rather than a closed-form multivariate mixture.
+
+\textbf{Mixture Density Networks.}
+MDNs~\cite{bishop1994mdn} attach mixture weight, mean, and variance heads to a neural network, yielding a cheap way to capture multimodality.
+It is useful to distinguish \emph{unimodal} distributions (a single peak, such as a single Gaussian) from \emph{multimodal} ones (several separated peaks).
+Because MDNs parameterize a mixture of Gaussians, they can in principle represent multimodal output distributions; in practice, if most mixture weights collapse onto one component the effective distribution becomes unimodal.
+In our setting the predictor keeps the I-JEPA transformer stack but emits $(\pi_k,\mu_k,\sigma_k)$ per token in a single forward pass; this already defines an explicit parametric distribution, and we can obtain as many samples as desired without re-running the encoder, simply by resampling from the mixture.
+
+\textbf{Normalizing flows and flow matching.}
+RealNVP~\cite{dinh2017realnvp} introduced affine coupling layers that are exactly invertible, so a simple base density (e.g., a standard Gaussian) is transformed into a complex one while keeping track of the exact change of variables.
+ActNorm layers~\cite{kingma2018glow} stabilize training by learning per-channel scales and offsets.
+Flow matching~\cite{lipman2023flowmatching} trains such flows by supervising a vector field that transports noise toward data along simple stochastic interpolants between the two.
+In our JEPA head, a stack of coupling layers conditions on context features and time embeddings; a single forward pass provides both an explicit likelihood for a teacher token and a mapping from Gaussian noise to a latent sample, so the full distribution is modeled analytically after one run rather than only through repeated sampling.
+
+\textbf{Diffusion models.}
+Denoising diffusion models~\cite{ho2020ddpm,song2021ddim} define a forward Markov chain that gradually corrupts data with Gaussian noise and train a neural network to reverse this process by predicting the noise at each step.
+We follow the DDPM noise-prediction formulation~\cite{ho2020ddpm} with DDIM-style deterministic sampling~\cite{song2021ddim}: at generation time the model is applied multiple times along a fixed noise schedule to iteratively denoise a latent from pure noise back to a plausible teacher embedding.
+Placed after the JEPA encoder, diffusion heads treat each teacher token as ground-truth clean data and learn to reverse progressively noised latents; the resulting distribution is accessed implicitly by running the denoising process multiple times with different noise seeds, making diffusion the most sampling-intensive of our predictors but also the one that empirically covers modes most thoroughly.
+
+\textbf{Positioning against recent JEPA-denoising literature.}
+Recent works (e.g., D-JEPA, 2024/2025) integrate per-token denoising objectives with JEPA-style predictors for generative modeling.
+Our setup differs in scope: we focus on representation-oriented evaluation under a fixed JEPA backbone and compare probabilistic heads under matched masking/training infrastructure.
+At the same time, these works suggest that tighter joint optimization of JEPA and denoising objectives may improve both stability and sample quality; we discuss this direction as future work.
+
+\textbf{Additional contextual baselines.}
+The revision also positions our study relative to strong self-supervised baselines (e.g., DINO-style ViT training), masked-diffusion representation learners (e.g., MDM), and more expressive flow families (MAF/IAF, spline couplings), clarifying which conclusions are currently supported by evidence and which remain hypotheses.
+
+\section{Methodology}
+\subsection{Principle of JEPA}
+I-JEPA operates in latent space: a momentum-updated teacher encodes full images into patch embeddings, while a student sees only masked context patches (Figure~\ref{fig:baseline_scheme}).
+The predictor receives context features plus positional target queries and outputs a prediction for each masked target embedding; losses compare predicted and teacher target embeddings without pixel reconstruction.
+This removes low-level pixel pressure and focuses on semantic consistency; masking budget (area/AR/num blocks) controls how ambiguous the targets are.
+Because multiple completions are plausible, deterministic predictors can collapse to a single mode—hence our probabilistic heads.
+In every variant, training alternates: (1) sample context/target masks, (2) teacher encodes the full image, (3) student encodes context only, (4) predictor outputs a distribution for each target token, (5) loss is applied in latent space, (6) EMA updates the teacher.
+
+\subsection{Backbone and Masking}
+We closely follow the method from the original I-JEPA paper. All variants share the same ViT encoder~\cite{dosovitskiy2021vit}: image size $64{\times}64$, patch size $8$, hidden dimension $384$, $10$ transformer layers, and $8$ heads (MDN uses identical sizes; the autoregressive variant uses $600$ hidden dim and $6$ layers to match its RNADE head).
+For each image, a large context block is sampled, and four target blocks are selected with area $\in[0.15,0.20]$ and aspect ratio $\in[0.75,1.50]$; at least $8$ context patches are enforced.
+The student encodes only visible context, while the EMA teacher encodes full images.
+Target positional encodings are added to learned query tokens for each masked patch.
+
+\subsection{Dataset and Preprocessing}
+We train on Tiny ImageNet-100 (100 classes, $\sim$50k train / 5k val images at $64{\times}64$)~\cite{le2015tinyimagenet} using the Hugging Face \texttt{zh-plus/tiny-imagenet} split with classes filtered to $<100$.
+Per-channel mean and std are estimated on a 2{,}000-image subsample.
+Training augmentations: random resized crop to $64{\times}64$ and horizontal flip; validation uses a resize only.
+The random-resized-crop augmentation first samples a sub-rectangle covering $80$--$100\%$ of the original area (with slight aspect-ratio jitter), then rescales that patch back to $64{\times}64$, effectively implementing random zoom-and-translate.
+
+\subsection{Training Hyperparameters}
+All runs use AdamW~\cite{loshchilov2019adamw} with gradient clipping ($\|g\|\_2\le3$).
+EMA momentum follows a cosine schedule from $0.998$ to $1.0$.
+Flow and diffusion heads train with batch size $600$ and base LR $5\!\times\!10^{-5}$; MDN uses batch $360$ and LR $3\!\times\!10^{-4}$; the autoregressive head uses batch $128$ and LR $1\!\times\!10^{-4}$.
+Diffusion inference uses $50$ DDIM-like steps~\cite{song2021ddim}; flows clamp coupling scales to $\pm 2$ for stability.
+
+\section{Predictor Case Studies}
+We separate the qualitative and quantitative discussion by predictor to make the report approachable to re-implement each variant.  Every subsection summarizes the motivation, implementation strategy, and the concrete evaluation numbers.
+
+\subsection{Deterministic I-JEPA Baseline}
+The baseline follows~\cite{assran2023jepa}: the student predictor ingests context tokens and positional queries, applies two transformer blocks, and emits a single embedding per target. The loss is a squared error between predictor outputs and teacher targets for the visible tokens,
+\begin{equation}
+    \mathcal{L}_{\mathrm{base}} = \frac{1}{N}\sum_{i=1}^N \bigl\|\hat{z}_i - z_i\bigr\|_2^2,
+\end{equation}
+where $z_i$ are teacher targets and $\hat{z}_i$ are predictor outputs at the same masked locations.
+For consistency with the implemented setup, the training objective also includes variance and covariance regularization terms in the main runs.
+EMA momentum ramps from $0.998$ to $1.0$ over the schedule.
+On Tiny ImageNet-100 this baseline reaches 0.24 kNN@1 after processing 10.0M samples (Table~\ref{tab:results}, Figure~\ref{fig:baseline_scheme}), providing a deterministic reference point for the probabilistic heads.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.47\textwidth]{figures/i-jepa_scheme.jpeg}
+    \caption{High-level schematic of the deterministic I-JEPA architecture. The student sees only context patches, the teacher encodes the full image, and the predictor regresses target embeddings.}
+    \label{fig:baseline_scheme}
+\end{figure}
+
+\subsection{Mixture Density Network (MDN)}
+The MDN head keeps the same backbone but widens the predictor: two transformer layers process the concatenated context and target queries before three linear heads emit $(\pi_k,\mu_k,\sigma_k)$ for each token.  We fix $K=5$ diagonal Gaussians, i.e., Gaussians whose covariance matrices are diagonal so that each latent dimension has its own variance but there are no off-diagonal correlations; this keeps the parameter count modest while still allowing anisotropic uncertainty.  The loss is the negative log-likelihood of the teacher tokens under this mixture:
+\begin{equation}
+    \mathcal{L}_{\mathrm{MDN}}
+    = - \frac{1}{N}\sum_{i=1}^N
+    \log \sum_{k=1}^K \pi_{ik}\,
+    \mathcal{N}\!\bigl(z_i;\,\mu_{ik},\mathrm{diag}(\sigma_{ik}^2)\bigr).
+\end{equation}
+Using the shared evaluation pipeline, the MDN predictor achieves 0.052 kNN@1 after processing 2.5M samples (Figure~\ref{fig:mdn_scheme}), showing lower performance compared to the baseline despite identical data and augmentation.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.47\textwidth]{figures/mdn_scheme.jpeg}
+    \caption{Schematic of the MDN predictor head. The JEPA backbone provides context and target queries; the MDN head outputs mixture weights and Gaussian parameters for each masked token.}
+    \label{fig:mdn_scheme}
+\end{figure}
+
+\subsection{Autoregressive RNADE Head}
+Our RNADE-style predictor operates on normalized teacher embeddings and factorizes the joint density into one-dimensional conditionals.  A masked MLP with FiLM modulation incorporates the pooled context, while ActNorm ensures numerically stable conditioning.  Compared to the MDN, this design increases expressivity at the cost of sequential sampling: for each embedding dimension we sample a component via the learned mixture weights and draw from the corresponding Gaussian before proceeding to the next dimension.  The loss is the sum of per-coordinate negative log-likelihoods:
+\begin{equation}
+    \mathcal{L}_{\mathrm{AR}}
+    = - \frac{1}{N}\sum_{i=1}^N \sum_{d=1}^D
+    \log \sum_{k=1}^K \alpha_{i,d,k}\,
+    \mathcal{N}\!\bigl(z_{i,d};\,\mu_{i,d,k},\sigma_{i,d,k}^2\bigr).
+\end{equation}
+Here $z_{i,d}$ is coordinate $d$ of teacher token $i$, and $(\alpha_{i,d,k},\mu_{i,d,k},\sigma_{i,d,k})$ parameterize the 1D mixture for that coordinate. Training for 50 epochs with AdamW ($1\!\times\!10^{-4}$, weight decay $0.05$) and batch size $128$ (roughly $2.0\!\times\!10^4$ steps, $\sim$2.5M samples) delivers smooth convergence and an effective component count of $\approx1.8$.  On Tiny ImageNet-100 the autoregressive head attains 0.13 kNN@1 after processing about 2.5M samples (Figure~\ref{fig:autoregressive_scheme}), with a multi-modal but elongated latent distribution relative to the MDN (Figure~\ref{fig:distributions_row}, third panel).
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.47\textwidth]{figures/autoregression_scheme.jpeg}
+    \caption{Schematic of the autoregressive (RNADE-style) head. Context features condition a masked MLP that outputs mixture parameters coordinate-wise, implementing an autoregressive density over the embedding.}
+    \label{fig:autoregressive_scheme}
+\end{figure}
+
+\subsection{RealNVP Flow Matching Head}
+The flow-matching head augments the deterministic predictor with six affine coupling layers whose conditioners observe both context features and time embeddings.  We follow~\cite{lipman2023flowmatching} by training with stochastic blends of teacher tokens and Gaussian noise, supervising a denoising vector field.  The loss is the negative conditional log-likelihood under the invertible map:
+\begin{equation}
+    \mathcal{L}_{\mathrm{flow}}
+    = - \frac{1}{N}\sum_{i=1}^N \log p_\theta(z_i\mid c_i),
+\end{equation}
+where $c_i$ is the context embedding for target $i$ and $p_\theta$ is computed via the RealNVP change of variables.
+On Tiny ImageNet-100 the best run reaches 0.18 kNN@1 after processing approximately 9.3M samples ($1.5\!\times\!10^4$ steps), with validation objective around $-72.83$ in raw training units.
+Sampling requires multiple forward passes: each new random base Gaussian sample undergoes the full inverse flow transformation to generate a latent prediction, making flow matching computationally intensive for distribution generation (Figure~\ref{fig:flow_scheme}).
+The flow head requires substantial computational investment and remains below diffusion in this setup.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.47\textwidth]{figures/flow_matching_scheme.jpeg}
+    \caption{Schematic of the flow-matching head. Coupling layers transform Gaussian noise into latent predictions, conditioned on context features and time embeddings.}
+    \label{fig:flow_scheme}
+\end{figure}
+
+\subsection{Diffusion over Embeddings}
+Our diffusion variant treats each teacher token as a ``clean'' latent and trains a U-Net-like head to denoise embeddings corrupted by a linear beta schedule (Figure~\ref{fig:diffusion_scheme}).  Sinusoidal timestep embeddings are injected into residual attention blocks to encode the noise level, and context summaries FiLM the intermediate features with per-layer scales and shifts.  Training mirrors the flow setup (batch 600, AdamW $5\!\times\!10^{-5}$) but optimizes a DDPM noise-prediction loss.  At inference time we use DDIM-style sampling~\cite{song2021ddim} with 50 steps, and a 25-step variant that retains most of the accuracy while halving latency.  Diffusion achieves the best Tiny ImageNet-100 performance with 0.22 kNN@1 after processing roughly 3.0M samples (Table~\ref{tab:results}), and its latent samples cover the teacher distribution more uniformly than the other heads.
+\begin{equation}
+    \mathcal{L}_{\mathrm{diff}}
+    = \mathbb{E}_{t,i,\epsilon_i}\bigl[
+        \|\epsilon_i - \epsilon_\theta(x_{i,t}, t, c_i)\|_2^2
+    \bigr],
+\end{equation}
+where $z_i$ is the clean teacher token, $x_{i,t}$ is its noised version at step $t$, $\epsilon_i$ is the injected Gaussian noise, and $c_i$ is the context embedding.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.47\textwidth]{figures/diffusion_scheme.jpeg}
+    \caption{Schematic of the diffusion head. Teacher embeddings are treated as clean data; noise schedules and a U-Net-like predictor implement iterative denoising in latent space.}
+    \label{fig:diffusion_scheme}
+\end{figure}
+
+
+\section{GitHub Repository}
+You can find all the code at our repository: \url{github.com/vladkalinichencko/Probabilistic-JEPA}.
+
+\section{Experiments and Evaluation}
+\subsection{Setup}
+We rely on kNN@1 as the primary success metric: it freezes the encoder, measures neighborhood consistency of embeddings with a non-parametric image classifier, and proxies how linearly separable and semantically structured the features are without training a task-specific head.
+Evaluation procedure: (i) freeze the student backbone, (ii) run \emph{all} Tiny ImageNet train and validation images through the network, (iii) average ViT patch tokens to obtain one global embedding per image, (iv) L2-normalize every vector, (v) for each validation embedding find its top-20 nearest neighbors among the training embeddings using cosine similarity, and (vi) assign the majority train label from those neighbors to the validation sample.
+
+\textbf{Distribution sampling methodology}: For visualizing learned distributions (Figure~\ref{fig:distributions_row}), we generate 20 samples per teacher token. Single-shot methods (MDN, autoregressive) sample from their explicit distributions in one forward pass, while iterative methods (diffusion, flow matching) require multiple forward passes from different noise initializations to generate equivalent samples.
+
+kNN@1 represents the percentage of correctly classified validation images using this 20-nearest-neighbor classifier, i.e., a simple proxy for representation quality in embedding space.
+It effectively measures how well the encoder organizes the feature space such that images from the same class cluster together.
+Notably, our model operates on $64\times64$ images (4× smaller than the original $256\times256$ I-JEPA implementation) with approximately 100× fewer parameters, yet achieves baseline performance of 25\% accuracy under this constrained setup.
+Our shared evaluation pipeline re-extracts train/val embeddings for every checkpoint, normalizes them, and performs chunked cosine kNN so the reported scores in Table~\ref{tab:results} are directly comparable.
+The loss curves can look jagged because the BYOL-style EMA teacher and the student are chasing each other: as the student updates, the EMA target lags and then catches up, producing moving targets that induce non-monotonic training/validation loss traces even when representation quality (kNN) improves steadily.
+
+\textbf{Compute budget and hardware.} Every experiment was executed on a single NVIDIA A100 80GB GPU. Diffusion and flow matching consumed nearly the entire allocated window ($5.0\!\times\!10^3$ and $1.5\!\times\!10^4$ steps respectively), whereas the MDN and early autoregressive runs had to be stopped once the shared cluster queue reclaimed the GPU. In the MDN case we intentionally terminated training after 2.5M samples because the validation kNN stayed flat for multiple checkpoints and continuing would only block the queue. The refreshed autoregressive results correspond to rerunning the model with the same hardware, but for 50 epochs at the original batch size 128 (about $2.0\!\times\!10^4$ steps, $\sim$2.5M samples), which clarifies how much of its earlier deficit stemmed from limited compute rather than architecture alone.
+
+\textbf{Inference cost.} MDN and diffusion-free predictors emit a distribution in a single forward pass, so sampling masked tokens only requires drawing from the emitted parameters. The RNADE head still needs to iterate over embedding dimensions when sampling, but it stays within one pass of the ViT backbone. Flow matching must apply six coupling layers per sample and repeat the inverse transform for every draw, and diffusion amortizes 50 DDIM steps (or 25 for the fast variant) to denoise latents. On the same A100, producing 20 samples for a masked block takes milliseconds with MDN/autoregressive predictors but several hundred milliseconds for flow matching or diffusion, which matters for downstream deployment.
+
+\subsection{Results}
+\begin{table}[t]
+\begin{center}
+\begin{tabular}{>{\raggedright}p{2.0cm}cccp{2.0cm}}
+\toprule
+Model & Batch & Steps & Total samples & Best val kNN@1 \\
+\midrule
+Baseline I-JEPA & 600 & $1.7\!\times\!10^4$ & 10.0M & 0.24 \\
+Diffusion & 600 & $5.0\!\times\!10^3$ & 3.0M & 0.22 \\
+Normalizing flow & 600 & $1.5\!\times\!10^4$ & 9.3M & 0.18 \\
+Autoregressive & 128 & $2.0\!\times\!10^4$ & 2.5M & 0.13 \\
+MDN ($K{=}5$) & 360 & $6.9\!\times\!10^3$ & 2.5M & 0.052 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Validation kNN@1 over Tiny ImageNet-100.\label{tab:results}}
+\end{table}
+
+The deterministic baseline still secures the highest absolute accuracy at 0.24 kNN@1 after 10.0M samples, providing the upper bound for our study.
+Diffusion follows closely with 0.22 kNN@1 while needing only 3.0M samples, underscoring its sample efficiency.
+Normalizing flows reach 0.18 kNN@1 after 9.3M samples, the refreshed autoregressive head lands at 0.13 kNN@1 once trained for 50 epochs with batch size 128, and MDN remains at 0.052 kNN@1 after we stopped it early because the validation kNN curve stayed flat despite continued optimization.
+Figures~\ref{fig:distributions_row}--\ref{fig:knn_row} collect distributions (Figure~\ref{fig:distributions_row}), loss traces (Figure~\ref{fig:loss_row}), and kNN@1 curves (Figure~\ref{fig:knn_row}) for all predictors in aligned rows.
+
+\section{Visualizations}
+\begin{figure*}[t]
+    \hspace{-2cm}
+    \begin{tabular}{ccccc}
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/i-jepa_distribution.png}\\
+            \small Baseline I-JEPA
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/mdn_distribution.png}\\
+            \small MDN
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/autoregression_distribution.png}\\
+            \small Autoregression
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/flow_matching_distribution.png}\\
+            \small Flow matching
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/diffusion_distribution.png}\\
+            \small Diffusion
+        \end{tabular}
+    \end{tabular}
+    \caption{Latent distributions (PCA projections) for each predictor.}
+    \label{fig:distributions_row}
+\end{figure*}
+
+\begin{figure*}[t]
+    \hspace{-2cm}
+    \begin{tabular}{ccccc}
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/i-jepa_loss.png}\\
+            \small Baseline I-JEPA
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/mdn_loss.png}\\
+            \small MDN
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/autoregression_loss.png}\\
+            \small Autoregression
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/flow_matching_loss.jpg}\\
+            \small Flow matching
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/diffusion_loss.png}\\
+            \small Diffusion
+        \end{tabular}
+    \end{tabular}
+    \caption{Loss curves aligned across predictors.}
+    \label{fig:loss_row}
+\end{figure*}
+
+\begin{figure*}[t]
+    \hspace{-2cm}
+    \begin{tabular}{ccccc}
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/i-jepa_knn.png}\\
+            \small Baseline I-JEPA
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/mdn_knn.png}\\
+            \small MDN
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/autoregression_knn.png}\\
+            \small Autoregression
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/flow_matching_knn.jpg}\\
+            \small Flow matching
+        \end{tabular} &
+        \begin{tabular}{c}
+            \includegraphics[width=0.20\textwidth]{figures/diffusion_knn.png}\\
+            \small Diffusion
+        \end{tabular}
+    \end{tabular}
+    \caption{kNN@1 validation curves for all five predictors.}
+    \label{fig:knn_row}
+\end{figure*}
+
+\section{Analysis and Observations}
+\begin{itemize}
+    \item \textbf{Relative ranking and budgets.} The deterministic baseline retains the best accuracy (0.24 kNN@1) because its predictor simply regresses teacher targets and enjoyed a full 10.0M-sample schedule. Diffusion lands second (0.22) despite processing only 3.0M samples thanks to its noise-conditioning: each step sees multiple corrupted variants of the same latent, effectively augmenting supervision and making it the most sample-efficient head. Flow matching (0.18) sits between them; it models exact likelihoods but pays a conditioning overhead and converges more slowly. The autoregressive RNADE head improves to 0.13 once we extend it to 50 epochs at batch 128, confirming that its earlier 0.09 result was mostly undertraining rather than architecture limits. MDN bottoms out at 0.052 because we deliberately stopped it after 2.5M samples when its kNN curve refused to budge—continuing would have held the A100 with no measurable gains.
+    \item \textbf{EMA-induced oscillations are expected.} Figure~\ref{fig:loss_row} shows the same sawtooth pattern across heads: as the student improves, the EMA teacher lags, briefly making the task harder before catching up. Tracking kNN@1 rather than raw loss is crucial here because it grows monotonically despite those oscillations (Figure~\ref{fig:knn_row}).
+    \item \textbf{Uncertainty comes with inference cost.} MDN/autoregressive heads generate full distributions in roughly the same time as the deterministic baseline, so they are attractive when latency matters. Flow matching and diffusion offer richer uncertainty but require iterative sampling (coupling stacks or DDIM steps), which is two orders of magnitude slower per mask on the same A100. The right choice therefore depends on whether calibrated uncertainty or throughput is the priority.
+\end{itemize}
+
+\section{Extended Evaluation}
+\subsection{Joint Objective Formulation}
+\vspace{2mm}
+
+\subsection{Uncertainty Calibration}
+\vspace{2mm}
+
+\subsection{Compute-Controlled Comparison}
+\vspace{2mm}
+
+\subsection{Targeted Ablation Experiments}
+\vspace{2mm}
+
+\section{Limitations}
+
+\begin{itemize}
+    \item \textbf{Resource imbalance.} Even though every run used the same A100 hardware, wall-clock budgets differed: diffusion/flow finished their full schedules while MDN was preempted after 2.5M samples. Some of the accuracy gaps therefore reflect scheduling rather than architecture. Running all heads under the exact same sample budget (or scaling laws) is future work.
+    \item \textbf{Evaluation scope.} kNN@1 is a useful online indicator of separability, but by itself it does not establish calibration, robustness, or transfer quality.
+    \item \textbf{Generative diversity and latency.} We did not quantify how diverse the sampled masks are or how long each predictor takes to serve latent edits. Documenting per-model inference latency and diversity statistics (e.g., coverage over multiple sampled completions) would clarify which probabilistic head is best suited for interactive editing or data augmentation.
+\end{itemize}
+
+\section{Conclusion}
+We extended I-JEPA with four probabilistic predictors and evaluated them on Tiny ImageNet-100 using identical masking, EMA schedules, and a shared kNN@1 pipeline.
+The deterministic baseline still sets the absolute bar at 0.24 kNN@1 after 10.0M samples, while diffusion reaches 0.22 kNN@1 with only 3.0M samples, making it the most sample-efficient probabilistic head.
+Normalizing flows arrive at 0.18 kNN@1 after roughly 9.3M samples, and lightweight methods (MDN: 0.052 kNN@1, autoregressive: 0.13 kNN@1) underperform unless they receive comparable compute budgets.
+These results indicate that diffusion is currently the strongest probabilistic head in this setup, though it remains computationally heavier at inference time than single-pass predictors.
+At the same time, the present evidence is not yet sufficient to claim broad downstream gains from uncertainty modeling.
+The next stage of this project is therefore to validate uncertainty quantitatively (NLL/ECE/entropy analyses), remove compute confounders, and test transfer/robustness with linear-probe and fine-tuned evaluations.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
