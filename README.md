@@ -1,9 +1,10 @@
 # Variational JEPA – Adding Uncertainty to Visual Representations
 
-**Report:** [Read the project report (PDF)](report/report.pdf)  
-**LaTeX source:** [report/report.tex](report/report.tex)
+**[Read the report (PDF)](report/report.pdf)**
 
-This repository implements probabilistic predictor heads for I-JEPA, including
-mixture-density, autoregressive, flow-matching, and diffusion variants.
-
-The report source, bibliography, and figures live in [`report/`](report/).
+JEPA models predict latent representations rather than pixels, but a standard
+predictor returns one answer even when an image admits several plausible
+completions. This project asks what changes when that prediction becomes a
+distribution: it compares mixture, autoregressive, flow-matching, and diffusion
+heads on the same visual JEPA backbone, probing uncertainty without giving up
+semantic representation learning.
