@@ -18,3 +18,11 @@ MDN/mdn_last.pt
 autoregression/predictor_model.pth
 autoregression/student_model.pth
 autoregression/teacher_model.pth
+
+# LaTeX compilation artifacts (the report PDF is kept in version control)
+report/*.aux
+report/*.bbl
+report/*.blg
+report/*.fdb_latexmk
+report/*.fls
+report/*.log
